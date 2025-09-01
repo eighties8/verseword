@@ -33,7 +33,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const puzzles = Object.entries(puzzlesData).map(([date, puzzle]: [string, any]) => ({
       date,
       word: puzzle.word,
-      len: puzzle.len
+      len: puzzle.word.length
     }));
 
     // If random mode is requested, return a single random puzzle

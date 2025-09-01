@@ -4,37 +4,33 @@ This directory contains the JSON data files for the Verseword game.
 
 ## Required Files
 
-### For 5-letter mode:
-- `puzzles5-2025.json` - Array of daily puzzles: `[{ "date": "2025-01-01", "word": "MOUTH" }]`
-- `clues5.json` - Object mapping words to clues: `{ "MOUTH": "sassy lip cave" }`
-- `dict5.json` - Array of allowed guess words: `["HELLO", "WORLD", ...]`
-
-### For 6-letter mode:
-- `puzzles6-2025.json` - Array of daily puzzles: `[{ "date": "2025-01-01", "word": "MOUNTAIN" }]`
-- `clues6.json` - Object mapping words to clues: `{ "MOUNTAIN": "tall rocky peak" }`
-- `dict6.json` - Array of allowed guess words: `["HELLO", "WORLD", ...]`
+### For all word lengths (5, 6, 7):
+- `puzzles-2025.json` - Object of daily puzzles: `{ "2025-01-01": { "word": "MOUTH", "len": 5 } }`
+- `clues-2025.json` - Object mapping words to clues: `{ "MOUTH": "sassy lip cave", "MOUNTAIN": "tall rocky peak" }`
+- `dictionary5.json`, `dictionary6.json`, `dictionary7.json` - Arrays of allowed guess words: `["HELLO", "WORLD", ...]`
 
 ## File Format Examples
 
-### puzzles5-2025.json
+### puzzles-2025.json
 ```json
-[
-  { "date": "2025-01-01", "word": "MOUTH" },
-  { "date": "2025-01-02", "word": "BRAIN" },
-  { "date": "2025-01-03", "word": "SPACE" }
-]
+{
+  "2025-01-01": { "word": "MOUTH", "len": 5 },
+  "2025-01-02": { "word": "BRAIN", "len": 5 },
+  "2025-01-03": { "word": "SPACE", "len": 5 }
+}
 ```
 
-### clues5.json
+### clues-2025.json
 ```json
 {
   "MOUTH": "sassy lip cave",
   "BRAIN": "thinking organ",
-  "SPACE": "cosmic void"
+  "SPACE": "cosmic void",
+  "MOUNTAIN": "tall rocky peak"
 }
 ```
 
-### dict5.json
+### dictionary5.json
 ```json
 [
   "HELLO",

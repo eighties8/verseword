@@ -1,6 +1,13 @@
 import { DailyPuzzle, PuzzleData, CluesData } from './types';
 import { getESTDateString } from './timezone';
 
+// Helper function for case-agnostic clue lookup
+function findClue(clues: CluesData, word: string): string {
+  const normalizedWord = word.toUpperCase();
+  const matchingKey = Object.keys(clues).find(key => key.toUpperCase() === normalizedWord);
+  return matchingKey ? clues[matchingKey] : "I literally have no clue";
+}
+
 export async function loadDailyPuzzle(randomMode = false): Promise<DailyPuzzle> {
   try {
     
@@ -34,14 +41,15 @@ export async function loadDailyPuzzle(randomMode = false): Promise<DailyPuzzle> 
       throw new Error('No puzzle data available');
     }
 
-    // Load clues for the specific word length
-    const cluesResponse = await fetch(`/api/clues?length=${puzzle.len}`);
+    // Load clues for the specific year
+    const year = puzzle.date.split('-')[0];
+    const cluesResponse = await fetch(`/api/clues?year=${year}`);
     if (!cluesResponse.ok) {
       throw new Error('Failed to load clues data');
     }
     const clues: CluesData = await cluesResponse.json();
 
-    const clue = clues[puzzle.word.toLowerCase()] || "I literally have no clue";
+    const clue = findClue(clues, puzzle.word);
     
     // Use EST timezone for isToday calculation to be consistent
     const todayEST = getESTDateString();
@@ -85,14 +93,15 @@ export async function loadPuzzle(date: Date): Promise<DailyPuzzle> {
       throw new Error(`No puzzle available for date ${targetDate}`);
     }
 
-    // Load clues for the specific word length
-    const cluesResponse = await fetch(`/api/clues?length=${puzzle.len}`);
+    // Load clues for the specific year
+    const year = puzzle.date.split('-')[0];
+    const cluesResponse = await fetch(`/api/clues?year=${year}`);
     if (!cluesResponse.ok) {
       throw new Error('Failed to load clues data');
     }
     const clues: CluesData = await cluesResponse.json();
 
-    const clue = clues[puzzle.word.toLowerCase()] || "I literally have no clue";
+    const clue = findClue(clues, puzzle.word);
 
     // Check if this is today's puzzle using EST timezone
     const todayEST = getESTDateString();

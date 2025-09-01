@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Calendar, ChevronDown } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import { getESTDateString } from "../lib/timezone";
 
 export default function ArchivePage() {
@@ -364,44 +364,20 @@ export default function ArchivePage() {
         </div>
       </div>
 
-      {/* Verseword Length Selection */}
+      {/* Verseword Puzzle Selection */}
       {selectedDate && isDateSelectable(selectedDate) && (
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 px-6 py-3 bg-green-50 rounded-lg border border-green-200">
-            <Calendar className="w-5 h-5 text-green-600" />
-            <span className="text-green-900 font-medium">
-              Verseword #{(() => {
-                // Calculate puzzle number (starting from 8/25/25 as puzzle #1)
-                const startDate = new Date('2025-08-25');
-                const daysDiff = Math.floor((selectedDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-                return daysDiff + 1;
-              })()}
-            </span>
-          </div>
-          
-          <div className="mt-6 space-y-3">
-            <h3 className="text-lg font-semibold text-gray-900">Choose Puzzle:</h3>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                href={`/?date=${formatDateKey(selectedDate)}&archive=true&length=5`}
-                className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-600 transition-colors"
-              >
-                Verseword 5
-              </Link>
-              <Link
-                href={`/?date=${formatDateKey(selectedDate)}&archive=true&length=6`}
-                className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-600 transition-colors"
-              >
-                Verseword 6
-              </Link>
-              <Link
-                href={`/?date=${formatDateKey(selectedDate)}&archive=true&length=7`}
-                className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-600 transition-colors"
-              >
-                Verseword 7
-              </Link>
-            </div>
-          </div>
+          <Link
+            href={`/?date=${formatDateKey(selectedDate)}&archive=true`}
+            className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
+          >
+            Verseword #{(() => {
+              // Calculate puzzle number (starting from 8/25/25 as puzzle #1)
+              const startDate = new Date('2025-08-25');
+              const daysDiff = Math.floor((selectedDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+              return daysDiff + 1;
+            })()}
+          </Link>
         </div>
       )}
     </div>

@@ -596,6 +596,10 @@ export default function Game({ openSettings, resetSettings }: {
           dict = await loadDictionary(puzzle.word.length as 5 | 6 | 7);
         }
         
+        // Debug: Log the hidden word and clue
+        console.log('🎯 Hidden word:', puzzle.word);
+        console.log('💡 Clue:', puzzle.clue);
+        
         // No more automatic vowel reveal - all letters start hidden
         const lockedLetters: Record<number, string | null> = {};
 
@@ -647,6 +651,7 @@ export default function Game({ openSettings, resetSettings }: {
             // Mark this route as hydrated and track which puzzle the state belongs to
             activePuzzleIdRef.current = puzzleId;
             hydratedForRouteRef.current = true;
+            console.log('[HYDRATION] Set hydrated to true for puzzle:', puzzleId);
             
             setCurrentGuess(new Array(puzzleWordLength).fill(''));
             hasRestoredFromStorage.current = true;
@@ -684,6 +689,7 @@ export default function Game({ openSettings, resetSettings }: {
           // Mark this route as hydrated and track which puzzle the state belongs to
           activePuzzleIdRef.current = puzzleId;
           hydratedForRouteRef.current = true;
+          console.log('[HYDRATION] Set hydrated to true for restored puzzle:', puzzleId);
           
           // For won games, ensure currentGuess shows the solution and restore animation states
           if (restoredGameState.gameStatus === 'won' && restoredGameState.lockedLetters) {
@@ -719,6 +725,7 @@ export default function Game({ openSettings, resetSettings }: {
           // Mark this route as hydrated and track which puzzle the state belongs to
           activePuzzleIdRef.current = puzzleId;
           hydratedForRouteRef.current = true;
+          console.log('[HYDRATION] Set hydrated to true for restored puzzle:', puzzleId);
           
           setCurrentGuess(new Array(puzzleWordLength).fill(''));
           setFlippingRows(new Set());
@@ -804,13 +811,21 @@ export default function Game({ openSettings, resetSettings }: {
       const [year, month, day] = dateString.split('-').map(Number);
       const archiveDate = new Date(year, month - 1, day); // month is 0-indexed
       const dateISO = toDateISO(archiveDate);
-      const wl = Number(router.query.length) || 5; // Default to 5 if no length specified
-              return { id: makeId(dateISO, wl as WordLength), dateISO, wordLength: wl as WordLength, isArchive: true as const };
+      // For archived puzzles, use the word length from the loaded puzzle data
+      // This will be set by the puzzle loading useEffect
+      const wl = gameState.wordLength || Number(router.query.length) || 5; // Use game state first, then query param, then default
+      const result = { id: makeId(dateISO, wl as WordLength), dateISO, wordLength: wl as WordLength, isArchive: true as const };
+      console.log('[ROUTE PUZZLE] Archive route:', result, 'gameState.wordLength:', gameState.wordLength);
+      return result;
     }
 
     const todayISO = toDateISO(new Date());
+    // For daily puzzles, use the word length from the loaded puzzle data
+    // This will be set by the puzzle loading useEffect
     const wl = gameState.wordLength || 5; // Use current game state or default to 5
-            return { id: makeId(todayISO, wl as WordLength), dateISO: todayISO, wordLength: wl as WordLength, isArchive: false as const };
+    const result = { id: makeId(todayISO, wl as WordLength), dateISO: todayISO, wordLength: wl as WordLength, isArchive: false as const };
+    console.log('[ROUTE PUZZLE] Daily route:', result, 'gameState.wordLength:', gameState.wordLength);
+    return result;
   }, [router.isReady, router.query.archive, router.query.date, router.query.length, gameState.wordLength]);
 
   // Ref that says: "the in-memory gameState belongs to THIS puzzle id"
@@ -820,8 +835,22 @@ export default function Game({ openSettings, resetSettings }: {
   const hydratedForRouteRef = useRef(false);
 
   // When route changes, block saving until we hydrate for that route
+  // But don't reset if it's just a word length change for the same date
   useEffect(() => {
-    hydratedForRouteRef.current = false;
+    if (routePuzzle?.id && activePuzzleIdRef.current) {
+      const currentDate = activePuzzleIdRef.current.split(':')[0];
+      const newDate = routePuzzle.id.split(':')[0];
+      
+      // Only reset hydration if the date actually changed, not just the word length
+      if (currentDate !== newDate) {
+        hydratedForRouteRef.current = false;
+        console.log('[HYDRATION] Reset hydration due to date change:', currentDate, '->', newDate);
+      } else {
+        console.log('[HYDRATION] Keeping hydration for same date, word length change:', activePuzzleIdRef.current, '->', routePuzzle.id);
+      }
+    } else {
+      hydratedForRouteRef.current = false;
+    }
   }, [routePuzzle?.id]);
 
   // Also add this tiny effect so route changes don't leave stale refs
@@ -835,14 +864,15 @@ export default function Game({ openSettings, resetSettings }: {
     if (!router.isReady || !routePuzzle) return;
 
     // Quick debug to confirm values line up while pressing Enter on archive puzzle
-    // console.log('[SAVE GUARDS]', {
-    //   isReady: router.isReady,
-    //   routePuzzle,
-    //   activeId: activePuzzleIdRef.current,
-    //   hydrated: hydratedForRouteRef.current,
-    //   secret: gameState.secretWord,
-    //   status: gameState.gameStatus,
-    // });
+    console.log('[SAVE GUARDS]', {
+      isReady: router.isReady,
+      routePuzzle,
+      activeId: activePuzzleIdRef.current,
+      hydrated: hydratedForRouteRef.current,
+      secret: gameState.secretWord,
+      status: gameState.gameStatus,
+      attempts: gameState.attempts.length,
+    });
 
     // Must be hydrated for this route and state must belong to this route
     if (!hydratedForRouteRef.current) return;

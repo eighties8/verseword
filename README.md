@@ -37,31 +37,18 @@ verseword/
 │   ├── types.ts        # TypeScript type definitions
 │   ├── daily.ts        # Daily puzzle loader
 │   ├── gameLogic.ts    # Game evaluation and utilities
-│   ├── clues5.json     # 5-letter clues
-│   ├── clues6.json     # 6-letter clues
-│   ├── clues7.json     # 7-letter clues
+│   ├── clues-2025.json # All clues for 2025
+│   ├── clues-2026.json # All clues for 2026
 │   └── data/           # Game data files
 │       ├── dictionary5.json      # 5-letter dictionary
 │       ├── dictionary6.json      # 6-letter dictionary
 │       ├── dictionary7.json      # 7-letter dictionary
-│       ├── puzzles5-2025.json   # 5-letter daily puzzles (2025)
-│       ├── puzzles5-2026.json   # 5-letter daily puzzles (2026)
-│       ├── puzzles5-2027.json   # 5-letter daily puzzles (2027)
-│       ├── puzzles5-2028.json   # 5-letter daily puzzles (2028)
-│       ├── puzzles5-2029.json   # 5-letter daily puzzles (2029)
-│       ├── puzzles5-2030.json   # 5-letter daily puzzles (2030)
-│       ├── puzzles6-2025.json   # 6-letter daily puzzles (2025)
-│       ├── puzzles6-2026.json   # 6-letter daily puzzles (2026)
-│       ├── puzzles6-2027.json   # 6-letter daily puzzles (2027)
-│       ├── puzzles6-2028.json   # 6-letter daily puzzles (2028)
-│       ├── puzzles6-2029.json   # 6-letter daily puzzles (2029)
-│       ├── puzzles6-2030.json   # 6-letter daily puzzles (2030)
-│       ├── puzzles7-2025.json   # 7-letter daily puzzles (2025)
-│       ├── puzzles7-2026.json   # 7-letter daily puzzles (2026)
-│       ├── puzzles7-2027.json   # 7-letter daily puzzles (2027)
-│       ├── puzzles7-2028.json   # 7-letter daily puzzles (2028)
-│       ├── puzzles7-2029.json   # 7-letter daily puzzles (2029)
-│       └── puzzles7-2030.json   # 7-letter daily puzzles (2030)
+│       ├── puzzles-2025.json    # All daily puzzles (2025)
+│       ├── puzzles-2026.json    # All daily puzzles (2026)
+│       ├── puzzles-2027.json    # All daily puzzles (2027)
+│       ├── puzzles-2028.json    # All daily puzzles (2028)
+│       ├── puzzles-2029.json    # All daily puzzles (2029)
+│       └── puzzles-2030.json    # All daily puzzles (2030)
 ├── scripts/            # Build scripts
 │   └── buildData.ts    # Data file generator
 ├── styles/             # Global styles
@@ -161,15 +148,10 @@ const revealedMask = computeRevealsForWord(targetWord, {
 
 The game loads data from JSON files in `/lib` and `/lib/data`. You'll need to provide:
 
-### For 5-letter mode:
-- `lib/data/puzzles5-2025.json` → Array of `{ "date": "2025-01-01", "word": "MOUTH" }`
-- `lib/clues5.json` → Object `{ "MOUTH": "sassy lip cave", ... }`
-- `lib/data/dictionary5.json` → Array of allowed guess words
-
-### For 6-letter mode:
-- `lib/data/puzzles6-2025.json` → Array of daily puzzles
-- `lib/clues6.json` → Object mapping words to clues  
-- `lib/data/dictionary6.json` → Array of allowed guess words
+### For all word lengths (5, 6, 7):
+- `lib/data/puzzles-2025.json` → Object of `{ "2025-01-01": { "word": "MOUTH", "len": 5 } }`
+- `lib/clues-2025.json` → Object `{ "MOUTH": "sassy lip cave", "MOUNTAIN": "tall rocky peak", ... }`
+- `lib/data/dictionary5.json`, `dictionary6.json`, `dictionary7.json` → Arrays of allowed guess words
 
 ## Building Data Files
 

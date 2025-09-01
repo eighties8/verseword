@@ -3,6 +3,15 @@ import { Share2 } from "lucide-react";
 import { loadStats, winRate, StatsSnapshot, GameResult } from "../lib/stats";
 import { loadAll, makeId, toDateISO } from "../lib/storage";
 
+// Calculate puzzle number based on days since start date
+function getPuzzleNumber(dateISO: string): number {
+  const startDate = new Date('2025-08-25'); // Puzzle start date
+  const puzzleDate = new Date(dateISO);
+  const diffTime = puzzleDate.getTime() - startDate.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays + 1; // Start from puzzle #1
+}
+
 export default function StatsPage() {
   const [stats, setStats] = useState<StatsSnapshot | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -171,14 +180,18 @@ export default function StatsPage() {
       </div>
 
       {/* Overall Stats */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         <div className="bg-white p-4 rounded-lg border border-gray-200 text-center">
-          <div className="text-2xl font-bold text-blue-600">{stats.played}</div>
+          <div className="text-2xl font-bold text-gray-800">{stats.played}</div>
           <div className="text-sm text-gray-600">Played</div>
         </div>
         <div className="bg-white p-4 rounded-lg border border-gray-200 text-center">
-          <div className="text-2xl font-bold text-green-600">{winRate(stats)}%</div>
+          <div className="text-2xl font-bold text-gray-800">{winRate(stats)}%</div>
           <div className="text-sm text-gray-600">Win Rate</div>
+        </div>
+        <div className="bg-white p-4 rounded-lg border border-gray-200 text-center">
+          <div className="text-2xl font-bold text-gray-800">{stats.currentStreak}</div>
+          <div className="text-sm text-gray-600">Current Streak</div>
         </div>
       </div>
 
@@ -236,17 +249,9 @@ export default function StatsPage() {
                   }`}>
                     {result.won ? '✓' : '✗'}
                   </div>
-                  <div>
-                    <div className="font-medium text-gray-900">
-                      {result.won ? `${result.guesses}/6` : 'X/6'}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      {new Date(result.dateISO).toLocaleDateString()}
-                    </div>
+                  <div className="flex-1 text-sm text-gray-600">
+                    Puzzle #{getPuzzleNumber(result.dateISO)} • {new Date(result.dateISO).toLocaleDateString()} • <span className="font-mono text-gray-500">{result.solution || 'Unknown'}</span> • {result.won ? 'Won:' : 'Lost:'} {result.won ? `${result.guesses}/6` : 'X/6'}
                   </div>
-                </div>
-                <div className="text-sm text-gray-500">
-                  {result.wordLength} letters
                 </div>
               </div>
             ))}

@@ -3,15 +3,15 @@ import fs from 'fs';
 import path from 'path';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { length } = req.query;
+  const { year } = req.query;
   
-  if (!length || (length !== '5' && length !== '6' && length !== '7')) {
-    return res.status(400).json({ error: 'Invalid word length. Must be 5, 6, or 7.' });
+  if (!year || typeof year !== 'string') {
+    return res.status(400).json({ error: 'Year parameter is required.' });
   }
 
   try {
-    // Read the clues file from lib/data directory
-    const filePath = path.join(process.cwd(), 'lib', 'data', `clues${length}.json`);
+    // Read the clues file from lib/data directory using year-based naming
+    const filePath = path.join(process.cwd(), 'lib', 'data', `clues-${year}.json`);
     const fileContent = fs.readFileSync(filePath, 'utf8');
     const clues = JSON.parse(fileContent);
     

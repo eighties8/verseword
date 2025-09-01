@@ -3,21 +3,21 @@
 Generate daily puzzle files from clues json.
 
 Input files (in lib/data/):
-  - clues5.json, clues6.json, clues7.json
+  - clues-{YEAR}.json
     Format:
       {
-        "yowls": "Caterwaul cry fest",
-        "zoned": "Spaced out real nice",
-        "zones": "Earth's timely dance."
+        "YOWLS": "Caterwaul cry fest",
+        "ZONED": "Spaced out real nice",
+        "ZONES": "Earth's timely dance."
       }
 
 Output files (also in lib/data/):
-  - puzzles{N}-{YEAR}.json
+  - puzzles-{YEAR}.json
     Format:
-      [
-        { "date": "2025-08-25", "word": "HAPPY" },
-        { "date": "2025-08-26", "word": "DREAM" }
-      ]
+      {
+        "2025-08-25": { "word": "HAPPY", "len": 5 },
+        "2025-08-26": { "word": "DREAM", "len": 5 }
+      }
 
 Usage:
   python scripts/build_puzzles_from_clues.py
@@ -45,7 +45,6 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = REPO_ROOT / "lib" / "data"
 
 DEFAULT_YEARS = [2025, 2026, 2027, 2029, 2030]
-CLUE_FILES = {5: "clues5.json", 6: "clues6.json", 7: "clues7.json"}
 
 
 # ---------- date helpers ----------
