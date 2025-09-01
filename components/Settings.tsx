@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 interface SettingsConfig {
-  wordLength: 5 | 6 | 7;
   maxGuesses: number;
   revealClue: boolean;
   randomPuzzle: boolean;
@@ -36,11 +35,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
   useEffect(() => {
     if (isOpen && currentSettings) {
       // Ensure all required properties exist with defaults
-      // Use current puzzle's word length, fallback to stored settings, then default to 6
-      const currentWordLength = currentSettings.wordLength || 6;
-      
       const settingsWithDefaults: SettingsConfig = {
-        wordLength: currentWordLength,
         maxGuesses: currentSettings.maxGuesses,
         revealClue: openedFromClue ? true : currentSettings.revealClue,
         randomPuzzle: currentSettings.randomPuzzle ?? false,
@@ -128,33 +123,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
             </div>
           )}
 
-          {/* Word Length */}
-          <div>
-            <label className={`block text-sm font-medium mb-2 ${puzzleInProgress ? 'text-gray-400' : 'text-gray-700'}`}>
-              Default Daily Puzzle Word Length
-            </label>
-            {/* <p className="text-xs opacity-90 mb-1">Specify the default word length for your daily puzzle.</p> */}
-            <div className="flex space-x-4">
-              {([5, 6, 7] as const).map((length) => (
-                <label key={length} className={`flex items-center ${puzzleInProgress ? 'cursor-not-allowed opacity-50' : ''}`}>
-                  <input
-                    type="radio"
-                    name="wordLength"
-                    value={length}
-                    checked={settings.wordLength === length}
-                    onChange={(e) => setSettings(prev => ({ ...prev, wordLength: Number(e.target.value) as 5 | 6 | 7 }))}
-                    disabled={puzzleInProgress}
-                    className={`mr-2 text-green-600 focus:ring-green-500 focus:ring-2 focus:ring-offset-2 focus:border-green-500 [&:focus]:ring-green-500 [&:focus]:ring-2 [&:focus]:ring-offset-2 [&:focus]:border-green-500 ${puzzleInProgress ? 'cursor-not-allowed opacity-50' : ''}`}
-                    style={{
-                      accentColor: '#10b981', // green-500
-                      outline: 'none'
-                    }}
-                  />
-                  <span className={`text-sm ${puzzleInProgress ? 'text-gray-400' : 'text-gray-700'}`}>{length} letters</span>
-                </label>
-              ))}
-            </div>
-          </div>
+
 
           {/* Max Guesses */}
           {/* <div>

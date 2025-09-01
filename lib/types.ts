@@ -11,6 +11,7 @@ export interface DailyPuzzle {
 export interface PuzzleData {
   date: string;
   word: string;
+  len: number;
 }
 
 export interface CluesData {

@@ -44,7 +44,6 @@ type InputRowHandle = {
 };
 
 interface GameSettings {
-  wordLength: 5 | 6 | 7;
   maxGuesses: number;
   revealClue: boolean;
   randomPuzzle: boolean;
@@ -68,7 +67,6 @@ export default function Game({ openSettings, resetSettings }: {
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const [settings, setSettings] = useState<GameSettings>({
-    wordLength: GAME_CONFIG.WORD_LENGTH,
     maxGuesses: GAME_CONFIG.MAX_GUESSES,
     revealClue: GAME_CONFIG.REVEAL_CLUE,
     randomPuzzle: GAME_CONFIG.RANDOM_PUZZLE,
@@ -84,7 +82,7 @@ export default function Game({ openSettings, resetSettings }: {
     gameStatus: 'not_started',
     attemptIndex: 0,
     revealedLetters: new Set<number>(),
-    letterRevealsRemaining: GAME_CONFIG.LETTER_REVEALS[settings.wordLength as 5 | 6 | 7],
+    letterRevealsRemaining: GAME_CONFIG.LETTER_REVEALS[GAME_CONFIG.WORD_LENGTH],
   });
 
   const [currentGuess, setCurrentGuess] = useState<string[]>([]);
@@ -220,9 +218,16 @@ export default function Game({ openSettings, resetSettings }: {
       localStorage.removeItem('verseword-puzzle-state');
       localStorage.removeItem('verseword-puzzle-completed');
       
-      // Reset game state
+      // Set loading state
+      setIsLoading(true);
+      
+      // Load new puzzle and dictionary
+      const puzzle = await loadDailyPuzzle(settings.randomPuzzle);
+      const dict = await loadDictionary(puzzle.word.length as 5 | 6 | 7);
+      
+      // Reset game state with puzzle-determined word length
       setGameState({
-        wordLength: settings.wordLength,
+        wordLength: puzzle.word.length as 5 | 6 | 7,
         secretWord: '',
         clue: undefined,
         attempts: [],
@@ -230,25 +235,16 @@ export default function Game({ openSettings, resetSettings }: {
         gameStatus: 'not_started',
         attemptIndex: 0,
         revealedLetters: new Set<number>(),
-        letterRevealsRemaining: 3,
+        letterRevealsRemaining: GAME_CONFIG.LETTER_REVEALS[puzzle.word.length as 5 | 6 | 7],
       });
       
       // Reset current guess
-      setCurrentGuess(new Array(settings.wordLength).fill(''));
+      setCurrentGuess(new Array(puzzle.word.length).fill(''));
       
       // Reset UI states
       setIsShaking(false);
       setForceClear(false);
       setToasts([]);
-      
-      // Set loading state
-      setIsLoading(true);
-      
-      // Load new puzzle and dictionary
-      const [puzzle, dict] = await Promise.all([
-        loadDailyPuzzle(settings.wordLength, settings.randomPuzzle),
-        loadDictionary(settings.wordLength),
-      ]);
 
       // No more automatic vowel reveal - all letters start hidden
       const lockedLetters: Record<number, string | null> = {};
@@ -260,7 +256,7 @@ export default function Game({ openSettings, resetSettings }: {
         clue: settings.revealClue ? puzzle.clue : undefined,
         lockedLetters,
         revealedLetters: new Set<number>(),
-        letterRevealsRemaining: GAME_CONFIG.LETTER_REVEALS[settings.wordLength as 5 | 6 | 7],
+        letterRevealsRemaining: GAME_CONFIG.LETTER_REVEALS[puzzle.word.length as 5 | 6 | 7],
       }));
       
       setDictionary(dict);
@@ -276,7 +272,7 @@ export default function Game({ openSettings, resetSettings }: {
       addToast('Failed to start new game', 'error');
       setIsLoading(false);
     }
-  }, [settings.wordLength, settings.randomPuzzle, settings.revealClue]);
+  }, [settings.randomPuzzle, settings.revealClue]);
 
   // Handle win animation and letter flip
   useEffect(() => {
@@ -491,24 +487,10 @@ export default function Game({ openSettings, resetSettings }: {
     }
   }, []);
 
-  // Update game state when settings change (but not during archive puzzle loading)
-  useEffect(() => {
-    const isArchivePuzzle = router.query.date && router.query.archive === 'true';
-    if (!isArchivePuzzle && settings.wordLength !== gameState.wordLength) {
-      
-      setGameState(prev => ({ ...prev, wordLength: settings.wordLength }));
-    }
-  }, [settings.wordLength, gameState.wordLength, router.query.date, router.query.archive]);
+
 
   const handleSettingsChange = useCallback((newSettings: GameSettings) => {
     setSettings(newSettings);
-    
-    // Update game state if word length changed
-    if (newSettings.wordLength !== gameState.wordLength) {
-      setGameState(prev => ({ ...prev, wordLength: newSettings.wordLength }));
-      // Reset current guess to match new word length
-      setCurrentGuess(new Array(newSettings.wordLength).fill(''));
-    }
     
     // If random puzzle setting changed, clear saved state
     if (newSettings.randomPuzzle !== settings.randomPuzzle) {
@@ -601,23 +583,17 @@ export default function Game({ openSettings, resetSettings }: {
           const dateString = router.query.date as string;
           const [year, month, day] = dateString.split('-').map(Number);
           const archiveDate = new Date(year, month - 1, day); // month is 0-indexed
-          const archiveLength = router.query.length ? parseInt(router.query.length as string) as 5 | 6 | 7 : settings.wordLength;
-          
-          puzzle = await loadPuzzle(archiveDate, archiveLength);
-          
-          // Update word length setting for archive puzzles (only if different)
-          if (archiveLength !== settings.wordLength) {
 
-            setSettings(prev => ({ ...prev, wordLength: archiveLength }));
-          }
           
-          // Load dictionary for the archive puzzle length, not the settings length
-          dict = await loadDictionary(archiveLength);
+          puzzle = await loadPuzzle(archiveDate);
+          
+          // Load dictionary for the puzzle's word length
+          dict = await loadDictionary(puzzle.word.length as 5 | 6 | 7);
         } else {
-          puzzle = await loadDailyPuzzle(settings.wordLength, settings.randomPuzzle);
+          puzzle = await loadDailyPuzzle(settings.randomPuzzle);
           
-          // Load dictionary for the daily puzzle length
-          dict = await loadDictionary(settings.wordLength);
+          // Load dictionary for the puzzle's word length
+          dict = await loadDictionary(puzzle.word.length as 5 | 6 | 7);
         }
         
         // No more automatic vowel reveal - all letters start hidden
@@ -625,10 +601,8 @@ export default function Game({ openSettings, resetSettings }: {
 
         if (!alive) return;
 
-        // For archive puzzles, ensure we use the correct word length
-        const puzzleWordLength = router.query.date && router.query.archive === 'true' 
-          ? (router.query.length ? parseInt(router.query.length as string) as 5 | 6 | 7 : settings.wordLength)
-          : settings.wordLength;
+        // Use the puzzle's actual word length
+        const puzzleWordLength = puzzle.word.length as 5 | 6 | 7;
 
         // After loading puzzle, check if we have saved state to restore
         let dateISO: string;
@@ -640,10 +614,10 @@ export default function Game({ openSettings, resetSettings }: {
           const [year, month, day] = dateString.split('-').map(Number);
           const archiveDate = new Date(year, month - 1, day); // month is 0-indexed
           dateISO = toDateISO(archiveDate);
-          wordLength = (router.query.length ? parseInt(router.query.length as string) : settings.wordLength) as WordLength;
+          wordLength = puzzleWordLength;
         } else {
           dateISO = toDateISO(new Date());
-          wordLength = settings.wordLength as WordLength;
+          wordLength = puzzleWordLength;
         }
         
         const puzzleId = makeId(dateISO, wordLength);
@@ -667,7 +641,7 @@ export default function Game({ openSettings, resetSettings }: {
               clue: settings.revealClue ? puzzle.clue : undefined,
                           lockedLetters,
             revealedLetters: new Set<number>(),
-            letterRevealsRemaining: GAME_CONFIG.LETTER_REVEALS[settings.wordLength as 5 | 6 | 7],
+            letterRevealsRemaining: GAME_CONFIG.LETTER_REVEALS[puzzleWordLength],
             }));
             
             // Mark this route as hydrated and track which puzzle the state belongs to
@@ -739,7 +713,7 @@ export default function Game({ openSettings, resetSettings }: {
             clue: settings.revealClue ? puzzle.clue : undefined,
             lockedLetters,
             revealedLetters: new Set<number>(),
-            letterRevealsRemaining: GAME_CONFIG.LETTER_REVEALS[settings.wordLength as 5 | 6 | 7],
+            letterRevealsRemaining: GAME_CONFIG.LETTER_REVEALS[puzzleWordLength],
           }));
           
           // Mark this route as hydrated and track which puzzle the state belongs to
@@ -777,7 +751,7 @@ export default function Game({ openSettings, resetSettings }: {
       alive = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [settings.wordLength, settings.randomPuzzle, settings.revealClue, router.query.date, router.query.archive]);
+  }, [settings.randomPuzzle, settings.revealClue, router.query.date, router.query.archive]);
 
   // ===== Keep currentGuess aligned when locked letters change =====
   useEffect(() => {
@@ -830,14 +804,14 @@ export default function Game({ openSettings, resetSettings }: {
       const [year, month, day] = dateString.split('-').map(Number);
       const archiveDate = new Date(year, month - 1, day); // month is 0-indexed
       const dateISO = toDateISO(archiveDate);
-      const wl = Number(router.query.length) || (settings.wordLength as number);
+      const wl = Number(router.query.length) || 5; // Default to 5 if no length specified
               return { id: makeId(dateISO, wl as WordLength), dateISO, wordLength: wl as WordLength, isArchive: true as const };
     }
 
     const todayISO = toDateISO(new Date());
-    const wl = settings.wordLength as number;
+    const wl = gameState.wordLength || 5; // Use current game state or default to 5
             return { id: makeId(todayISO, wl as WordLength), dateISO: todayISO, wordLength: wl as WordLength, isArchive: false as const };
-  }, [router.isReady, router.query.archive, router.query.date, router.query.length, settings.wordLength]);
+  }, [router.isReady, router.query.archive, router.query.date, router.query.length, gameState.wordLength]);
 
   // Ref that says: "the in-memory gameState belongs to THIS puzzle id"
   const activePuzzleIdRef = useRef<string>('');
@@ -1001,10 +975,10 @@ export default function Game({ openSettings, resetSettings }: {
         const [year, month, day] = dateString.split('-').map(Number);
         const archiveDate = new Date(year, month - 1, day); // month is 0-indexed
         dateISO = toDateISO(archiveDate);
-        wordLength = (router.query.length ? parseInt(router.query.length as string) : settings.wordLength) as WordLength;
+        wordLength = (router.query.length ? parseInt(router.query.length as string) : gameState.wordLength) as WordLength;
       } else {
         dateISO = toDateISO(new Date());
-        wordLength = settings.wordLength as WordLength;
+        wordLength = gameState.wordLength;
       }
       
               const puzzleId = makeId(dateISO, wordLength);
@@ -1053,7 +1027,7 @@ export default function Game({ openSettings, resetSettings }: {
         queueFocusFirstEmpty();
       }, 100);
     }
-  }, [gameState.wordLength, gameState.secretWord, queueFocusFirstEmpty, router.query.date, router.query.archive, router.query.length, settings.wordLength]);
+  }, [gameState.wordLength, gameState.secretWord, queueFocusFirstEmpty, router.query.date, router.query.archive, router.query.length]);
 
   // Clear ALL Verseword data and reset to factory defaults
   const clearAllVersewordData = useCallback(() => {
@@ -1106,7 +1080,6 @@ export default function Game({ openSettings, resetSettings }: {
       
       // Reset settings to defaults
       setSettings({
-        wordLength: GAME_CONFIG.WORD_LENGTH,
         maxGuesses: GAME_CONFIG.MAX_GUESSES,
         revealClue: GAME_CONFIG.REVEAL_CLUE,
         randomPuzzle: GAME_CONFIG.RANDOM_PUZZLE,

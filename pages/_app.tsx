@@ -11,7 +11,6 @@ type NextPageWithLayout = AppProps["Component"] & {
 
 // Default settings that match the Game component's defaults
 const DEFAULT_SETTINGS = {
-  wordLength: 5,
   maxGuesses: 6,
   revealClue: false,
   randomPuzzle: false,
