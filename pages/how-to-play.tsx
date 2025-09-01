@@ -19,17 +19,12 @@ export default function HowToPlayPage() {
           <div className="flex justify-center gap-2">
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
               <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-green-600 text-white">
-                A
+                J
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
               <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
-                R
-              </div>
-            </div>
-            <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
-                I
+                E
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
@@ -39,12 +34,17 @@ export default function HowToPlayPage() {
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
               <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
-                E
+                U
+              </div>
+            </div>
+            <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
+              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+                S
               </div>
             </div>
           </div>
           <p className="text-center text-gray-700">
-            <strong>A</strong> is in the word and in the correct spot.
+            <strong>J</strong> is in the word and in the correct spot.
           </p>
         </div>
 
@@ -58,27 +58,27 @@ export default function HowToPlayPage() {
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
               <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
-                T
+                A
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
               <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-yellow-500 text-white">
-                O
+                V
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
               <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
-                N
+                E
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
               <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
-                Y
+                S
               </div>
             </div>
           </div>
           <p className="text-center text-gray-700">
-            <strong>O</strong> is in the word but in the wrong spot.
+            <strong>V</strong> is in the word but in the wrong spot.
           </p>
         </div>
 
@@ -87,27 +87,27 @@ export default function HowToPlayPage() {
           <div className="flex justify-center gap-2">
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
               <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+                W
+              </div>
+            </div>
+            <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
+              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+                O
+              </div>
+            </div>
+            <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
+              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+                R
+              </div>
+            </div>
+            <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
+              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+                K
+              </div>
+            </div>
+            <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
+              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
                 S
-              </div>
-            </div>
-            <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
-                N
-              </div>
-            </div>
-            <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
-                A
-              </div>
-            </div>
-            <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
-                F
-              </div>
-            </div>
-            <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
-                U
               </div>
             </div>
           </div>
