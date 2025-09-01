@@ -28,13 +28,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   // Load settings from localStorage on mount
   useEffect(() => {
     try {
-      const savedSettings = localStorage.getItem('wordseer-settings');
+      const savedSettings = localStorage.getItem('verseword-settings');
       if (savedSettings) {
         setSettings(JSON.parse(savedSettings));
       }
       
       // Also check for debug mode
-      const savedDebugMode = localStorage.getItem('wordseer-debug-mode');
+      const savedDebugMode = localStorage.getItem('verseword-debug-mode');
       if (savedDebugMode) {
         setDebugMode(JSON.parse(savedDebugMode));
       }
@@ -47,7 +47,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     setSettings(newSettings);
     // Save to localStorage
     try {
-      localStorage.setItem('wordseer-settings', JSON.stringify(newSettings));
+      localStorage.setItem('verseword-settings', JSON.stringify(newSettings));
     } catch (error) {
       console.error('Error saving settings:', error);
     }

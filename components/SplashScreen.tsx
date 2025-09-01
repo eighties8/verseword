@@ -38,17 +38,17 @@ export default function SplashScreen({ onStartGame, onOpenSettings }: SplashScre
               <circle cx="128" cy="128" r="14" fill="#0B4D2A"/>
             </svg> */}
 
-            <img src="/logo-alt3.webp" alt="Wordseer" />
+            <img src="/logo-cross.webp" alt="Verseword" />
 
           </div>
 
 
         </div>
 
-        <h1 className="text-5xl mb-4">Wordseer</h1>
+        <h1 className="text-5xl mb-4">Verseword</h1>
 
         <h2 className="text-lg mb-8">
-          Get 6 chances to guess a 5-7 letter word.
+          Get 6 chances to guess a 5-7 letter word from the Bible.
         </h2>
 
         {/* Action */}
@@ -81,7 +81,7 @@ export default function SplashScreen({ onStartGame, onOpenSettings }: SplashScre
         </div>
 
         {/* <div className="mt-12 text-xs text-gray-400">
-          <div className="mb-1">Wordseer – A word guessing game with clues</div>
+          <div className="mb-1">Verseword – A word guessing game with clues</div>
           <div>Challenge your vocabulary and deduction skills</div>
         </div> */}
       </div>

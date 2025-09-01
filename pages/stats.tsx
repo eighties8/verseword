@@ -40,7 +40,7 @@ export default function StatsPage() {
       
       if (latestResult.won) {
         // Try to get the actual game state from new storage system for accurate emoji grid
-        let emojiGrid = `Wordseer #${puzzleNumber} ${latestResult.guesses}/6\nhttps://wordseer.com\n`;
+        let emojiGrid = `Verseword #${puzzleNumber} ${latestResult.guesses}/6\nhttps://verseword.com\n`;
         
         try {
           // Get the puzzle state from new storage using the completed date
@@ -167,7 +167,7 @@ export default function StatsPage() {
       {/* Header */}
       <div className="text-center mt-4">
         <h1 className="text-3xl mb-2">Statistics</h1>
-        <p className="text-gray-600">Your Wordseer performance</p>
+        <p className="text-gray-600">Your Verseword performance</p>
       </div>
 
       {/* Overall Stats */}
@@ -300,5 +300,5 @@ export default function StatsPage() {
   );
 }
 
-StatsPage.title = "Stats";  // header shows "Wordseer · Stats"
+StatsPage.title = "Stats";  // header shows "Verseword · Stats"
 StatsPage.narrow = true;     // stats uses narrower container

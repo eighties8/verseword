@@ -1,6 +1,6 @@
 import { loadAll, PuzzleStateV2 } from "./storage";
 
-export const STATS_KEY = "wordseer:stats:v1";
+export const STATS_KEY = "verseword:stats:v1";
 
 export type GameResult = {
   dateISO: string;          // e.g. "2025-08-24"

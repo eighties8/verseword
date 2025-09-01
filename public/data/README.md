@@ -1,6 +1,6 @@
 # Game Data Files
 
-This directory contains the JSON data files for the Wordseer game.
+This directory contains the JSON data files for the Verseword game.
 
 ## Required Files
 

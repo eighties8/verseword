@@ -77,12 +77,12 @@ export default function ClueRibbon({ clue, targetWord, onRevealLetter, letterRev
         <div className="text-sm flex items-center justify-between gap-2 pr-3">
           <span className="transition-all duration-500 ease-in-out flex items-center gap-2 pl-1">
             {/* Special cases: show win/loss messages directly */}
-            {clue && (clue.startsWith('Solved! Wordseer #') || clue.startsWith('Loss:')) ? (
+            {clue && (clue.startsWith('Solved! Verseword #') || clue.startsWith('Loss:')) ? (
               <>
-                {clue.startsWith('Solved! Wordseer #') && <Medal className="w-5 h-5 text-white animate-pulse" />}
+                {clue.startsWith('Solved! Verseword #') && <Medal className="w-5 h-5 text-white animate-pulse" />}
                 {clue.startsWith('Loss:') && <HeartCrack className="w-4 h-4 text-white" />}
                 <span className={`transition-all duration-500 ease-in-out whitespace-nowrap ${
-                  clue.startsWith('Solved! Wordseer #') ? 'animate-fade-in' : ''
+                  clue.startsWith('Solved! Verseword #') ? 'animate-fade-in' : ''
                 }`}>{clue}</span>
               </>
             ) : variant === 'error' ? (

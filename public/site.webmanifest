@@ -1,6 +1,6 @@
 {
-  "name": "Wordseer",
-  "short_name": "Wordseer",
+  "name": "Verseword",
+  "short_name": "Verseword",
   "description": "A refined Wordle-style game with better UX and switchable 5, 6, or 7 letter modes",
   "icons": [
     {

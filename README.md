@@ -1,4 +1,4 @@
-# Wordseer - Crack the daily word with clever clues, vowel vibes, or pure brain dazzle!
+# Verseword - Crack the daily word with clever clues, vowel vibes, or pure brain dazzle!
 
 A refined Wordle-style game built with Next.js, TypeScript, and Tailwind CSS. With a focus on UX and player friendly features: switchable 5, 6, or 7 letter modes, option for clues, intelligent cursor management, and vowel reveals.
 
@@ -25,7 +25,7 @@ A refined Wordle-style game built with Next.js, TypeScript, and Tailwind CSS. Wi
 ## Project Structure
 
 ```
-wordseer/
+verseword/
 ├── components/          # React components
 │   ├── Game.tsx        # Main game orchestrator
 │   ├── GuessInputRow.tsx # Smart input row with cursor management
@@ -83,7 +83,7 @@ wordseer/
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd wordseer
+cd verseword
 ```
 
 2. Install dependencies:
@@ -228,7 +228,7 @@ The app can be deployed to any platform that supports Next.js:
 This project is licensed under the **Business Source License 1.1 (BUSL-1.1)**.
 
 - **Non-Production Use (now until 2028-01-01)**:  
-  You may use, modify, and self-host Wordseer for **personal, educational, or non-commercial evaluation purposes**.
+  You may use, modify, and self-host Verseword for **personal, educational, or non-commercial evaluation purposes**.
 
 - **Production Use**:  
   Requires a **commercial license** from the Licensor (Scott Blanchard, eighties8) until the Change Date.
@@ -244,4 +244,4 @@ See the [LICENSE](LICENSE) file for details.
 - Inspired by Wordle
 - Built with modern web technologies
 - Focus on accessibility and user experience
-# wordseer
+# verseword

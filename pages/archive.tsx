@@ -53,7 +53,7 @@ export default function ArchivePage() {
       const completedDates = new Set<string>();
       
       // Check the new puzzle storage system first
-      const puzzles = localStorage.getItem('wordseer:puzzles:v2');
+      const puzzles = localStorage.getItem('verseword:puzzles:v2');
       if (puzzles) {
         const puzzlesData = JSON.parse(puzzles);
         
@@ -70,7 +70,7 @@ export default function ArchivePage() {
       }
       
       // Fallback to old stats system for backward compatibility
-      const stats = localStorage.getItem('wordseer:stats:v1');
+      const stats = localStorage.getItem('verseword:stats:v1');
       if (stats) {
         const statsData = JSON.parse(stats);
         if (statsData.results) {
@@ -138,7 +138,7 @@ export default function ArchivePage() {
     // If not cached, fallback to old method
     try {
       // Check the new puzzle storage system first
-      const puzzles = localStorage.getItem('wordseer:puzzles:v2');
+      const puzzles = localStorage.getItem('verseword:puzzles:v2');
       if (puzzles) {
         const puzzlesData = JSON.parse(puzzles);
         
@@ -149,7 +149,7 @@ export default function ArchivePage() {
       }
       
       // Fallback to old stats system for backward compatibility
-      const stats = localStorage.getItem('wordseer:stats:v1');
+      const stats = localStorage.getItem('verseword:stats:v1');
       if (!stats) return false;
       
       const statsData = JSON.parse(stats);
@@ -364,13 +364,13 @@ export default function ArchivePage() {
         </div>
       </div>
 
-      {/* Wordseer Length Selection */}
+      {/* Verseword Length Selection */}
       {selectedDate && isDateSelectable(selectedDate) && (
         <div className="text-center">
           <div className="inline-flex items-center gap-2 px-6 py-3 bg-green-50 rounded-lg border border-green-200">
             <Calendar className="w-5 h-5 text-green-600" />
             <span className="text-green-900 font-medium">
-              Wordseer #{(() => {
+              Verseword #{(() => {
                 // Calculate puzzle number (starting from 8/25/25 as puzzle #1)
                 const startDate = new Date('2025-08-25');
                 const daysDiff = Math.floor((selectedDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
@@ -386,19 +386,19 @@ export default function ArchivePage() {
                 href={`/?date=${formatDateKey(selectedDate)}&archive=true&length=5`}
                 className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-600 transition-colors"
               >
-                Wordseer 5
+                Verseword 5
               </Link>
               <Link
                 href={`/?date=${formatDateKey(selectedDate)}&archive=true&length=6`}
                 className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-600 transition-colors"
               >
-                Wordseer 6
+                Verseword 6
               </Link>
               <Link
                 href={`/?date=${formatDateKey(selectedDate)}&archive=true&length=7`}
                 className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-600 transition-colors"
               >
-                Wordseer 7
+                Verseword 7
               </Link>
             </div>
           </div>
@@ -408,5 +408,5 @@ export default function ArchivePage() {
   );
 }
 
-ArchivePage.title = "Archive";  // header shows "Wordseer · Archive"
+ArchivePage.title = "Archive";  // header shows "Verseword · Archive"
 ArchivePage.narrow = true;      // archive uses narrower container

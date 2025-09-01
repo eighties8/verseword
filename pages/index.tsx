@@ -11,7 +11,7 @@ export default function Home() {
   useEffect(() => {
     // Decide what to show based on localStorage
     try {
-      const raw = localStorage.getItem('wordseer:puzzles:v2'); // update key if yours differs
+      const raw = localStorage.getItem('verseword:puzzles:v2'); // update key if yours differs
       const store = raw ? JSON.parse(raw) : {};
       const todayId = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
       const today = store[todayId];
@@ -37,11 +37,11 @@ export default function Home() {
     <SplashScreen
       onStartGame={() => {
         const todayId = new Date().toISOString().slice(0, 10);
-        const raw = localStorage.getItem('wordseer:puzzles:v2');
+        const raw = localStorage.getItem('verseword:puzzles:v2');
         const store = raw ? JSON.parse(raw) : {};
         if (!store[todayId]) {
           store[todayId] = { attempts: [], gameStatus: 'not_started', won: false };
-          localStorage.setItem('wordseer:puzzles:v2', JSON.stringify(store));
+          localStorage.setItem('verseword:puzzles:v2', JSON.stringify(store));
         }
         setView('game'); // single click → straight into Game
       }}

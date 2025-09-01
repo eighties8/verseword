@@ -217,8 +217,8 @@ export default function Game({ openSettings, resetSettings }: {
   const handleNewGame = useCallback(async () => {
     try {
       // Clear saved puzzle state
-      localStorage.removeItem('wordseer-puzzle-state');
-      localStorage.removeItem('wordseer-puzzle-completed');
+      localStorage.removeItem('verseword-puzzle-state');
+      localStorage.removeItem('verseword-puzzle-completed');
       
       // Reset game state
       setGameState({
@@ -285,7 +285,7 @@ export default function Game({ openSettings, resetSettings }: {
     
     // Check if this is a fresh win (not restored from localStorage)
     // Use a puzzle-specific completion key to avoid conflicts
-    const puzzleCompletionKey = `wordseer-puzzle-completed-${gameState.secretWord}-${router.query.date || 'today'}`;
+    const puzzleCompletionKey = `verseword-puzzle-completed-${gameState.secretWord}-${router.query.date || 'today'}`;
     const isFreshWin = !localStorage.getItem(puzzleCompletionKey);
     
     if (gameState.gameStatus === 'won' && !showWinAnimation && !settings.randomPuzzle && !isArchivePuzzle) {
@@ -410,7 +410,7 @@ export default function Game({ openSettings, resetSettings }: {
     const puzzleNumber = daysDiff + 1;
 
     // Generate emoji grid from game state
-    let emojiGrid = `Wordseer #${puzzleNumber} ${gameState.attemptIndex}/${settings.maxGuesses}\nhttps://wordseer.com\n`;
+    let emojiGrid = `Verseword #${puzzleNumber} ${gameState.attemptIndex}/${settings.maxGuesses}\nhttps://verseword.com\n`;
     
     // Add each submitted attempt as emoji rows (exclude the top input row)
     gameState.attempts.forEach((attempt, attemptIndex) => {
@@ -458,16 +458,16 @@ export default function Game({ openSettings, resetSettings }: {
 
   // ===== Debug flag (persisted) =====
   useEffect(() => {
-    const savedDebugMode = localStorage.getItem('wordseer-debug-mode');
+    const savedDebugMode = localStorage.getItem('verseword-debug-mode');
     if (savedDebugMode) setDebugMode(JSON.parse(savedDebugMode));
   }, []);
   useEffect(() => {
-    localStorage.setItem('wordseer-debug-mode', JSON.stringify(debugMode));
+    localStorage.setItem('verseword-debug-mode', JSON.stringify(debugMode));
   }, [debugMode]);
 
   // ===== Settings (persisted) =====
   useEffect(() => {
-    const savedSettings = localStorage.getItem('wordseer-settings');
+    const savedSettings = localStorage.getItem('verseword-settings');
     if (savedSettings) {
       try {
         const parsed = JSON.parse(savedSettings);
@@ -512,7 +512,7 @@ export default function Game({ openSettings, resetSettings }: {
     
     // If random puzzle setting changed, clear saved state
     if (newSettings.randomPuzzle !== settings.randomPuzzle) {
-      localStorage.removeItem('wordseer-puzzle-state');
+      localStorage.removeItem('verseword-puzzle-state');
     }
     
 
@@ -1013,17 +1013,17 @@ export default function Game({ openSettings, resetSettings }: {
       saveAll(all);
       
       // Clear dynamic puzzle completion keys for this specific puzzle
-      const puzzleCompletionKey = `wordseer-puzzle-completed-${gameState.secretWord}-${dateISO}`;
+      const puzzleCompletionKey = `verseword-puzzle-completed-${gameState.secretWord}-${dateISO}`;
       localStorage.removeItem(puzzleCompletionKey);
       
       // If this is the current puzzle, also clear the last played reference
       if (puzzleId === getLastPlayed()) {
-        localStorage.removeItem('wordseer:lastPlayed:v2');
+        localStorage.removeItem('verseword:lastPlayed:v2');
       }
       
       // Also clear old localStorage for backward compatibility
-      localStorage.removeItem('wordseer-puzzle-state');
-      localStorage.removeItem('wordseer-puzzle-completed');
+      localStorage.removeItem('verseword-puzzle-state');
+      localStorage.removeItem('verseword-puzzle-completed');
       
       // Reset the restoration flag so we can start fresh
       hasRestoredFromStorage.current = false;
@@ -1055,34 +1055,34 @@ export default function Game({ openSettings, resetSettings }: {
     }
   }, [gameState.wordLength, gameState.secretWord, queueFocusFirstEmpty, router.query.date, router.query.archive, router.query.length, settings.wordLength]);
 
-  // Clear ALL Wordseer data and reset to factory defaults
-  const clearAllWordseerData = useCallback(() => {
-    if (confirm('This will clear ALL Wordseer data including stats, settings, and puzzle state. Are you sure?')) {
+  // Clear ALL Verseword data and reset to factory defaults
+  const clearAllVersewordData = useCallback(() => {
+    if (confirm('This will clear ALL Verseword data including stats, settings, and puzzle state. Are you sure?')) {
       // Clear from new storage system
       saveAll({});
-      localStorage.removeItem('wordseer:lastPlayed:v2');
+      localStorage.removeItem('verseword:lastPlayed:v2');
       
       // Clear current stats
-      localStorage.removeItem('wordseer:stats:v1');
+      localStorage.removeItem('verseword:stats:v1');
       
       // Clear current settings
-      localStorage.removeItem('wordseer-settings');
+      localStorage.removeItem('verseword-settings');
       
       // Clear dynamic puzzle completion keys (these are puzzle-specific)
-      // We need to clear all keys that match the pattern wordseer-puzzle-completed-*
+      // We need to clear all keys that match the pattern verseword-puzzle-completed-*
       const keysToRemove: string[] = [];
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (key && key.startsWith('wordseer-puzzle-completed-')) {
+        if (key && key.startsWith('verseword-puzzle-completed-')) {
           keysToRemove.push(key);
         }
       }
       keysToRemove.forEach(key => localStorage.removeItem(key));
       
       // Also clear old localStorage for backward compatibility
-      localStorage.removeItem('wordseer-puzzle-state');
-      localStorage.removeItem('wordseer-puzzle-completed');
-      localStorage.removeItem('wordseer-debug-mode');
+      localStorage.removeItem('verseword-puzzle-state');
+      localStorage.removeItem('verseword-puzzle-completed');
+      localStorage.removeItem('verseword-debug-mode');
       
               // Reset to factory defaults instead of reloading
         setGameState(prev => ({
@@ -1730,7 +1730,7 @@ export default function Game({ openSettings, resetSettings }: {
               
               const daysDiff = Math.floor((puzzleDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
               const puzzleNumber = daysDiff + 1;
-              return `Solved! Wordseer #${puzzleNumber} ${gameState.attempts.length}/${settings.maxGuesses}`;
+              return `Solved! Verseword #${puzzleNumber} ${gameState.attempts.length}/${settings.maxGuesses}`;
             } else if (clueError) {
               return clueError;
             } else {
@@ -1961,9 +1961,9 @@ export default function Game({ openSettings, resetSettings }: {
                 Reset Puzzle
               </button>
               <button
-                onClick={clearAllWordseerData}
+                onClick={clearAllVersewordData}
                 className="px-4 py-2 bg-red-700 text-white rounded-lg text-sm hover:bg-red-800 transition-colors"
-                title="Clear ALL Wordseer data including stats, settings, and puzzle state"
+                title="Clear ALL Verseword data including stats, settings, and puzzle state"
               >
                 Clear All Data
               </button>

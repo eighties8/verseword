@@ -61,7 +61,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
       const hasUserChange = JSON.stringify(settings) !== JSON.stringify(prevSettingsRef.current);
       if (hasUserChange) {
         // Save to localStorage
-        localStorage.setItem('wordseer-settings', JSON.stringify(settings));
+        localStorage.setItem('verseword-settings', JSON.stringify(settings));
         onSettingsChange(settings);
       }
     }
