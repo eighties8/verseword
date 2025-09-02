@@ -1,4 +1,5 @@
 import { AArrowDown, BadgeInfo, HeartCrack, LifeBuoy, Medal } from "lucide-react";
+import { useState, useEffect } from "react";
 
 interface Props {
   clue: string;
@@ -11,9 +12,42 @@ interface Props {
   guessesText?: string;
   revealClueEnabled?: boolean;
   wordLength?: 5 | 6 | 7;
+  showClueByDefault?: boolean;
 }
 
-export default function ClueRibbon({ clue, targetWord, onRevealLetter, letterRevealsRemaining, letterRevealsAllowed = true, onSettingsClick, variant = 'clue', guessesText, revealClueEnabled, wordLength }: Props) {
+export default function ClueRibbon({ clue, targetWord, onRevealLetter, letterRevealsRemaining, letterRevealsAllowed = true, onSettingsClick, variant = 'clue', guessesText, revealClueEnabled, wordLength, showClueByDefault = false }: Props) {
+  
+  // State for smooth fade transitions
+  const [displayText, setDisplayText] = useState<string>('');
+  const [isVisible, setIsVisible] = useState(true);
+  
+  // Determine what text should be shown
+  const targetText = showClueByDefault && revealClueEnabled && clue 
+    ? clue 
+    : (guessesText || 'Click here for clues, vowels & settings');
+  
+  // Handle smooth text transitions
+  useEffect(() => {
+    if (displayText !== targetText) {
+      // Start fade out
+      setIsVisible(false);
+      
+      // After fade out completes, change text and fade back in
+      const timer = setTimeout(() => {
+        setDisplayText(targetText);
+        setIsVisible(true);
+      }, 400); // Half of the transition duration (800ms total)
+      
+      return () => clearTimeout(timer);
+    }
+  }, [targetText, displayText]);
+  
+  // Initialize display text
+  useEffect(() => {
+    if (!displayText) {
+      setDisplayText(targetText);
+    }
+  }, [targetText, displayText]);
   
   // Helper function to generate tooltip message based on word length and remaining reveals
   const getTooltipMessage = () => {
@@ -91,7 +125,7 @@ export default function ClueRibbon({ clue, targetWord, onRevealLetter, letterRev
                 {clue}
               </span>
             ) : (
-              // Always show guesses text by default, with hover behavior for regular clues
+              // Show text with smooth fade transitions
               <button
                 onClick={onSettingsClick}
                 type="button"
@@ -102,14 +136,18 @@ export default function ClueRibbon({ clue, targetWord, onRevealLetter, letterRev
                   hover:grid-cols-[auto,1fr]
                 "
               >
-                {/* Left: the default/short text - always show guesses */}
-                <span className="whitespace-nowrap">
-                  {guessesText || 'Click here for clues, vowels & settings'}
+                {/* Main text with fade transition */}
+                <span 
+                  className={`whitespace-nowrap transition-opacity duration-[800ms] ease-in-out ${
+                    isVisible ? 'opacity-100' : 'opacity-0'
+                  }`}
+                >
+                  {displayText}
                 </span>
 
-                {/* Right: the long/hover text - shows clue if enabled, otherwise guidance */}
-                <span className="whitespace-nowrap overflow-hidden">
-                  {revealClueEnabled && clue ? clue : ''}
+                {/* Hover text - shows opposite of what's currently displayed */}
+                <span className="whitespace-nowrap overflow-hidden transition-opacity duration-300 ease-in-out">
+                  {displayText === clue ? (guessesText || 'Click here for clues, vowels & settings') : (revealClueEnabled && clue ? clue : '')}
                 </span>
               </button>
             )}

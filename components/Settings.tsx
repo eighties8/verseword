@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 interface SettingsConfig {
   maxGuesses: number;
-  revealClue: boolean;
+  hideClue: boolean;
   randomPuzzle: boolean;
   lockGreenMatchedLetters: boolean;
 }
@@ -21,8 +21,8 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
   const [settings, setSettings] = useState<SettingsConfig>({
     ...currentSettings,
     randomPuzzle: currentSettings.randomPuzzle ?? false,
-    // Auto-enable Show Clue if opened from clue link
-    revealClue: openedFromClue ? true : currentSettings.revealClue,
+    // Auto-disable Hide Clue if opened from clue link
+    hideClue: openedFromClue ? false : currentSettings.hideClue,
     lockGreenMatchedLetters: currentSettings.lockGreenMatchedLetters ?? true,
   });
   
@@ -37,7 +37,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
       // Ensure all required properties exist with defaults
       const settingsWithDefaults: SettingsConfig = {
         maxGuesses: currentSettings.maxGuesses,
-        revealClue: openedFromClue ? true : currentSettings.revealClue,
+        hideClue: openedFromClue ? false : currentSettings.hideClue,
         randomPuzzle: currentSettings.randomPuzzle ?? false,
         lockGreenMatchedLetters: currentSettings.lockGreenMatchedLetters ?? true,
       };
@@ -146,20 +146,22 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
           <div className={`flex items-center justify-between ${openedFromClue ? 'rounded bg-green-600 p-4 text-white' : ''}`}>
             <div>
               <label className={`block text-sm font-medium mb-1 ${puzzleInProgress ? 'text-gray-400' : ''}`}>
-                Show Word Clue (Current: {settings.revealClue ? 'ON' : 'OFF'})
+                Disable Clues (Current: {settings.hideClue ? 'ON' : 'OFF'})
               </label>
-              <p className={`text-xs ${puzzleInProgress ? 'text-gray-400' : 'opacity-90'}`}>Display a hint for each puzzle</p>
+              <p className={`text-xs ${puzzleInProgress ? 'text-gray-400' : 'opacity-90'}`}>
+                {settings.hideClue ? 'Hide clues for a harder challenge' : 'Display a hint for each puzzle'}
+              </p>
             </div>
             <button
-              onClick={() => setSettings(prev => ({ ...prev, revealClue: !prev.revealClue }))}
+              onClick={() => setSettings(prev => ({ ...prev, hideClue: !prev.hideClue }))}
               disabled={puzzleInProgress}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                settings.revealClue ? 'bg-green-600' : 'bg-gray-200'
+                settings.hideClue ? 'bg-green-600' : 'bg-gray-200'
               } ${puzzleInProgress ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <span
                 className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  settings.revealClue ? 'translate-x-6' : 'translate-x-1'
+                  settings.hideClue ? 'translate-x-6' : 'translate-x-1'
                 }`}
               />
             </button>

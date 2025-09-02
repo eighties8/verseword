@@ -9,7 +9,7 @@ export type GameResult = {
   guesses: number;          // 1..MAX_GUESSES (or MAX_GUESSES if lost)
   solution?: string;        // optional, useful for debugging
   mode?: {
-    revealClue: boolean;
+    hideClue: boolean;
     randomPuzzle: boolean;
   };
 };

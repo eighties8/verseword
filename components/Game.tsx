@@ -45,7 +45,7 @@ type InputRowHandle = {
 
 interface GameSettings {
   maxGuesses: number;
-  revealClue: boolean;
+  hideClue: boolean;
   randomPuzzle: boolean;
   lockGreenMatchedLetters: boolean;
 }
@@ -68,7 +68,7 @@ export default function Game({ openSettings, resetSettings }: {
 
   const [settings, setSettings] = useState<GameSettings>({
     maxGuesses: GAME_CONFIG.MAX_GUESSES,
-    revealClue: GAME_CONFIG.REVEAL_CLUE,
+    hideClue: GAME_CONFIG.HIDE_CLUE,
     randomPuzzle: GAME_CONFIG.RANDOM_PUZZLE,
     lockGreenMatchedLetters: GAME_CONFIG.LOCK_GREEN_MATCHED_LETTERS,
   });
@@ -106,6 +106,9 @@ export default function Game({ openSettings, resetSettings }: {
   
   // ===== Post-submission unlocked positions =====
   const [postSubmitUnlockedPositions, setPostSubmitUnlockedPositions] = useState<Set<number>>(new Set());
+  
+  // State for clue ribbon fade behavior
+  const [showClueByDefault, setShowClueByDefault] = useState(true);
   
 
   
@@ -244,6 +247,7 @@ export default function Game({ openSettings, resetSettings }: {
       // Reset UI states
       setIsShaking(false);
       setForceClear(false);
+      setShowClueByDefault(true); // Reset clue ribbon to show clue by default
       setToasts([]);
 
       // No more automatic vowel reveal - all letters start hidden
@@ -253,7 +257,7 @@ export default function Game({ openSettings, resetSettings }: {
       setGameState(prev => ({
         ...prev,
         secretWord: puzzle.word,
-        clue: settings.revealClue ? puzzle.clue : undefined,
+        clue: !settings.hideClue ? puzzle.clue : undefined,
         lockedLetters,
         revealedLetters: new Set<number>(),
         letterRevealsRemaining: GAME_CONFIG.LETTER_REVEALS[puzzle.word.length as 5 | 6 | 7],
@@ -272,7 +276,7 @@ export default function Game({ openSettings, resetSettings }: {
       addToast('Failed to start new game', 'error');
       setIsLoading(false);
     }
-  }, [settings.randomPuzzle, settings.revealClue]);
+  }, [settings.randomPuzzle, settings.hideClue]);
 
   // Handle win animation and letter flip
   useEffect(() => {
@@ -642,7 +646,7 @@ export default function Game({ openSettings, resetSettings }: {
               ...prev,
               wordLength: puzzleWordLength,
               secretWord: puzzle.word,
-              clue: settings.revealClue ? puzzle.clue : undefined,
+              clue: !settings.hideClue ? puzzle.clue : undefined,
                           lockedLetters,
             revealedLetters: new Set<number>(),
             letterRevealsRemaining: GAME_CONFIG.LETTER_REVEALS[puzzleWordLength],
@@ -672,7 +676,7 @@ export default function Game({ openSettings, resetSettings }: {
           const restoredGameState: GameState = {
             wordLength: savedState.wordLength,
             secretWord: puzzle.word, // Use the actual puzzle word, not saved word
-            clue: settings.revealClue ? puzzle.clue : undefined,
+            clue: !settings.hideClue ? puzzle.clue : undefined,
             attempts: savedState.attempts,
             lockedLetters: savedState.lockedLetters,
             gameStatus: savedState.gameStatus,
@@ -716,7 +720,7 @@ export default function Game({ openSettings, resetSettings }: {
             ...prev,
             wordLength: puzzleWordLength,
             secretWord: puzzle.word,
-            clue: settings.revealClue ? puzzle.clue : undefined,
+            clue: !settings.hideClue ? puzzle.clue : undefined,
             lockedLetters,
             revealedLetters: new Set<number>(),
             letterRevealsRemaining: GAME_CONFIG.LETTER_REVEALS[puzzleWordLength],
@@ -736,6 +740,7 @@ export default function Game({ openSettings, resetSettings }: {
           setShowFadeInForInput(false);
           setFadeOutClearInput(false);
           setPreviouslyRevealedPositions(new Set());
+          setShowClueByDefault(true); // Reset clue ribbon to show clue by default for fresh games
           
           hasRestoredFromStorage.current = false;
         }
@@ -758,7 +763,7 @@ export default function Game({ openSettings, resetSettings }: {
       alive = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [settings.randomPuzzle, settings.revealClue, router.query.date, router.query.archive]);
+  }, [settings.randomPuzzle, settings.hideClue, router.query.date, router.query.archive]);
 
   // ===== Keep currentGuess aligned when locked letters change =====
   useEffect(() => {
@@ -1111,7 +1116,7 @@ export default function Game({ openSettings, resetSettings }: {
       // Reset settings to defaults
       setSettings({
         maxGuesses: GAME_CONFIG.MAX_GUESSES,
-        revealClue: GAME_CONFIG.REVEAL_CLUE,
+        hideClue: GAME_CONFIG.HIDE_CLUE,
         randomPuzzle: GAME_CONFIG.RANDOM_PUZZLE,
         lockGreenMatchedLetters: GAME_CONFIG.LOCK_GREEN_MATCHED_LETTERS,
       });
@@ -1170,6 +1175,11 @@ export default function Game({ openSettings, resetSettings }: {
 
     // Clear any previous error
     setClueError(null);
+
+    // Fade out clue to show guesses remaining during flip animation
+    if (!settings.hideClue) {
+      setShowClueByDefault(false);
+    }
 
     // Only undo reveal behavior for VALID submissions if letter locking is disabled
     if (!settings.lockGreenMatchedLetters) {
@@ -1263,6 +1273,11 @@ export default function Game({ openSettings, resetSettings }: {
         ...prev,
         lockedLetters: finalLockedLetters,
       }));
+      
+      // Fade clue back in after flip animation completes (only if game is still playing)
+      if (!settings.hideClue && !isWin && gameState.attemptIndex + 1 < settings.maxGuesses) {
+        setShowClueByDefault(true);
+      }
       
       // Now update game status to won/lost and save to localStorage (after flip animation)
       if (isWin || gameState.attemptIndex + 1 >= settings.maxGuesses) {
@@ -1370,7 +1385,7 @@ export default function Game({ openSettings, resetSettings }: {
           guesses: isWin ? (gameState.attemptIndex + 1) : settings.maxGuesses,
           solution: gameState.secretWord,
           mode: {
-            revealClue: GAME_CONFIG.REVEAL_CLUE,
+            hideClue: GAME_CONFIG.HIDE_CLUE,
             randomPuzzle: settings.randomPuzzle,
           },
         },
@@ -1774,14 +1789,15 @@ export default function Game({ openSettings, resetSettings }: {
               ? `Guess the word in ${attemptsLeft} tries`
               : `${attemptsLeft} guesses left`
           ) : undefined}
-          revealClueEnabled={settings.revealClue}
+          revealClueEnabled={!settings.hideClue}
           wordLength={gameState.wordLength}
+          showClueByDefault={showClueByDefault}
         />
           {/* Debug: Show clue info */}
           {/* {debugMode && (
             <div className="text-center mb-4 text-xs text-gray-500">
               <div>Clue: {gameState.clue || 'undefined'}</div>
-              <div>Reveal Clue: {settings.revealClue ? 'true' : 'false'}</div>
+              <div>Hide Clue: {settings.hideClue ? 'true' : 'false'}</div>
               <div>Secret Word: {gameState.secretWord}</div>
             </div>
           )} */}

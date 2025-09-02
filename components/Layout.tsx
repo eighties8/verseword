@@ -77,7 +77,7 @@ export default function Layout({ children, title, narrow, onSettingsChange, curr
     const defaultSettings = {
       wordLength: 5,
       maxGuesses: 6,
-      revealClue: false,
+      hideClue: false,
       randomPuzzle: false,
       lockGreenMatchedLetters: false,
     };
