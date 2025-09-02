@@ -6,7 +6,7 @@ Defaults:
   - Size: 2500 per length (6 & 7)
   - Language: en
   - Outputs JSON arrays sorted by frequency desc then alpha
-  - Filters: lowercase a–z only, exact length, no proper nouns
+  - Filters: lowercase a-z only, exact length, no proper nouns
 
 Usage examples:
   python3 scripts/build_common_wordlists.py

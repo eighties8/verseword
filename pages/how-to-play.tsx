@@ -126,7 +126,7 @@ export default function HowToPlayPage() {
             <li>Each guess must be a valid word with the selected length (5, 6, or 7 letters).</li>
             <li>The color of the tiles will change to show how close your guess was to the word.</li>
             <li>Stuck? You can use a lifeline to reveal a letter on the first guess.</li>
-            <li>Options? Use the personalized settings to choose the word length and enable word clues, & more.</li>
+            <li>Want more challenge? Use the personalized settings to enable hard mode & disable clues.</li>
             <li>Play past puzzles from the <Link href="/archive" className="text-blue-600 underline hover:text-blue-800">archive</Link>.</li>
           </ul>
         </div>

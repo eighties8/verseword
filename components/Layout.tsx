@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { BarChart3, CalendarDays, Settings, HelpCircle, Eye, Sparkles } from "lucide-react";
+import { BarChart3, CalendarDays, Settings, HelpCircle, Eye, Sparkles, Cross } from "lucide-react";
 import React, { useState } from "react";
 import SettingsModal from "./Settings";
 
@@ -12,13 +12,19 @@ type LayoutProps = {
   currentSettings?: any;        // current settings to pass to Settings modal
   debugMode?: boolean;          // debug mode flag
   onOpenSettings?: (openedFromClue: boolean, puzzleInProgress?: boolean) => void; // Callback to open settings from children
+  showScriptureLink?: boolean;  // show scripture link in header
+  scriptureWord?: string;       // word to link to scripture page
+  scripturePuzzleNumber?: string; // puzzle number for scripture page
 };
 
-export default function Layout({ children, title, narrow, onSettingsChange, currentSettings, debugMode = false, onOpenSettings }: LayoutProps) {
+export default function Layout({ children, title, narrow, onSettingsChange, currentSettings, debugMode = false, onOpenSettings, showScriptureLink = false, scriptureWord }: LayoutProps) {
   const router = useRouter();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [openedFromClue, setOpenedFromClue] = useState(false);
   const [puzzleInProgress, setPuzzleInProgress] = useState(false);
+
+  // Debug logging for scripture link
+  console.log('🏗️ Layout render - showScriptureLink:', showScriptureLink, 'scriptureWord:', scriptureWord);
 
   const handleSettingsClick = () => {
     setIsSettingsOpen(true);
@@ -139,6 +145,31 @@ export default function Layout({ children, title, narrow, onSettingsChange, curr
             >
               <HelpCircle className="w-5 h-5" />
             </button>
+            {showScriptureLink && scriptureWord && (
+              <button
+                aria-label="Scripture"
+                className="p-2 rounded hover:bg-gray-100"
+                onClick={() => router.push(`/scripture?word=${encodeURIComponent(scriptureWord)}`)}
+                title="View scripture definitions and verse references"
+              >
+                <Cross className="w-5 h-5" />
+              </button>
+            )}
+            {/* Debug: Manual scripture link trigger */}
+            {debugMode && (
+              <button
+                aria-label="Debug Scripture Link"
+                className="p-2 rounded hover:bg-gray-100 text-xs"
+                onClick={() => {
+                  console.log('🔧 Manual scripture link check triggered');
+                  // Trigger a manual check by refreshing the page
+                  window.location.reload();
+                }}
+                title="Debug: Trigger scripture link check"
+              >
+                🔧
+              </button>
+            )}
             <button
               aria-label="Stats"
               className="p-2 rounded hover:bg-gray-100"
@@ -167,7 +198,7 @@ export default function Layout({ children, title, narrow, onSettingsChange, curr
         </div>
       </header>
 
-      {/* Main content wrapper – identical on every page */}
+      {/* Main content wrapper - identical on every page */}
       <main className={`flex-1 ${title === undefined ? "flex items-center justify-center" : ""}`}>
         <div
           className={[
@@ -183,7 +214,7 @@ export default function Layout({ children, title, narrow, onSettingsChange, curr
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 px-4 py-3">
         <div className="max-w-4xl mx-auto text-center text-sm text-gray-500">
-          Verseword – Crack the daily word with clever clues, vowel vibes, or pure brain dazzle!
+        VerseWord - Deepen your Bible knowledge with daily word puzzles and insights
         </div>
       </footer>
 

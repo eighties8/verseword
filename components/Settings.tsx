@@ -89,7 +89,7 @@ export default function Settings({ isOpen, onClose, onSettingsChange, currentSet
       <div ref={modalRef} className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">Settings</h2>
+          <h2 className="text-xl">Settings</h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors"

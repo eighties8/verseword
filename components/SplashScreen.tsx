@@ -81,7 +81,7 @@ export default function SplashScreen({ onStartGame, onOpenSettings }: SplashScre
         </div>
 
         {/* <div className="mt-12 text-xs text-gray-400">
-          <div className="mb-1">Verseword – A word guessing game with clues</div>
+          <div className="mb-1">Verseword - A word guessing game with clues</div>
           <div>Challenge your vocabulary and deduction skills</div>
         </div> */}
       </div>

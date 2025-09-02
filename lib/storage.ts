@@ -138,7 +138,7 @@ export function migrateIfNeeded(): void {
   // localStorage.removeItem(V1_KEY);
 }
 
-// ---- v2 – public API ----
+// ---- v2 - public API ----
 export function loadAll(): PuzzlesById {
   migrateIfNeeded();
   return readJSON<PuzzlesById>(V2_KEY) ?? {};

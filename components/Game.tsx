@@ -4,6 +4,7 @@ import { GAME_CONFIG, ANIMATION_CONFIG } from '../lib/config';
 import { GameState, Toast } from '../lib/types';
 import { loadDailyPuzzle, loadPuzzle } from '../lib/daily';
 import { getESTDateString } from '../lib/timezone';
+import { Cross } from 'lucide-react';
 import {
   loadDictionary,
   evaluateGuess,
@@ -56,9 +57,10 @@ export const isTouch =
   ('ontouchstart' in window || navigator.maxTouchPoints > 0);
   
 
-export default function Game({ openSettings, resetSettings }: { 
+export default function Game({ openSettings, resetSettings, refreshScriptureLink }: { 
   openSettings?: (openedFromClue?: boolean, puzzleInProgress?: boolean) => void;
   resetSettings?: () => void;
+  refreshScriptureLink?: () => void;
 }) {
   const router = useRouter();
   
@@ -109,6 +111,20 @@ export default function Game({ openSettings, resetSettings }: {
   
   // State for clue ribbon fade behavior
   const [showClueByDefault, setShowClueByDefault] = useState(true);
+  
+  // State for scripture link
+  const [wordExistsInDefinitions, setWordExistsInDefinitions] = useState(false);
+  
+  // Function to check if word exists in definitions
+  const checkWordInDefinitions = useCallback(async (word: string) => {
+    try {
+      const response = await fetch(`/api/word-definitions?word=${encodeURIComponent(word)}`);
+      setWordExistsInDefinitions(response.ok);
+    } catch (error) {
+      console.error('Error checking word in definitions:', error);
+      setWordExistsInDefinitions(false);
+    }
+  }, []);
   
 
   
@@ -1285,6 +1301,19 @@ export default function Game({ openSettings, resetSettings }: {
           ...prev,
           gameStatus: isWin ? 'won' : 'lost',
         }));
+        
+        // Check if word exists in definitions for scripture link (only for daily puzzles)
+        const isArchivePuzzle = router.query.date && router.query.archive === 'true';
+        if (!isArchivePuzzle && !settings.randomPuzzle) {
+          checkWordInDefinitions(gameState.secretWord);
+          // Refresh scripture link in header
+          if (refreshScriptureLink) {
+            setTimeout(() => {
+              console.log('🔄 Refreshing scripture link after game completion');
+              refreshScriptureLink();
+            }, 500); // Longer delay to ensure localStorage is updated
+          }
+        }
         
         // Save puzzle state to localStorage
         const puzzleId = makeId(router.query.date as string || getESTDateString(), gameState.wordLength as 5 | 6 | 7);

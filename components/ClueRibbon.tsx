@@ -1,4 +1,4 @@
-import { AArrowDown, BadgeInfo, HeartCrack, LifeBuoy, Medal } from "lucide-react";
+import { AArrowDown, BadgeInfo, HeartCrack, LifeBuoy, Medal, Cross } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface Props {
@@ -191,7 +191,7 @@ export default function ClueRibbon({ clue, targetWord, onRevealLetter, letterRev
         
         {/* Speech bubble tail - Change color based on variant */}
         <div className={`absolute -left-[2px] top-1/2 transform -translate-y-1/2 -translate-x-1 w-0 h-0 border-r-8 border-t-8 border-t-transparent border-b-8 border-b-transparent transition-all duration-500 ease-in-out ${
-          variant === 'error' ? '!border-r-gray-800' : variant === 'success' ? '!border-r-green-500' : '!border-r-gray-300'
+          variant === 'error' ? '!border-r-gray-800' : variant === 'success' ? '!border-r-green-600' : '!border-r-gray-300'
         }`} 
         style={{
           borderRightColor: variant === 'error' ? '#ef4444' : variant === 'success' ? '#16a34a' : '#6b7280'

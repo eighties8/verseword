@@ -48,7 +48,7 @@ function puzzleToGameResult(puzzle: PuzzleStateV2): GameResult {
     dateISO: puzzle.dateISO,
     wordLength: puzzle.wordLength,
     won: puzzle.gameStatus === 'won',
-    guesses: puzzle.gameStatus === 'won' ? puzzle.attemptIndex : puzzle.attempts.length,
+    guesses: puzzle.gameStatus === 'won' ? puzzle.attemptIndex + 1 : puzzle.attempts.length,
     solution: puzzle.secretWord,
   };
 }

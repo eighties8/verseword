@@ -6,7 +6,7 @@ ALPHA57 = re.compile(r"^[A-Z]{5,7}$")
 
 def load_words(p: Path):
     data = json.loads(p.read_text(encoding="utf-8"))
-    # normalize: uppercase, strip, filter to alpha 5–7
+    # normalize: uppercase, strip, filter to alpha 5-7
     norm = []
     seen = set()
     for w in data:

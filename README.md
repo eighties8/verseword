@@ -1,6 +1,5 @@
-# Verseword - Crack the daily word with clever clues, vowel vibes, or pure brain dazzle!
-
-A refined Wordle-style game built with Next.js, TypeScript, and Tailwind CSS. With a focus on UX and player friendly features: switchable 5, 6, or 7 letter modes, option for clues, intelligent cursor management, and vowel reveals.
+# VerseWord - Deepen your Bible knowledge with daily word puzzles and verse insights.
+A Wordle-style puzzle guessing app with a biblical basis built with Next.js, TypeScript, and Tailwind CSS. With a focus on UX and player friendly features: switchable 5, 6, or 7 letter modes, option for clues, intelligent cursor management, and vowel reveals.
 
 ## Features
 
