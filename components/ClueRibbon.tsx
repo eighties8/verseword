@@ -65,7 +65,7 @@ export default function ClueRibbon({ clue, targetWord, onRevealLetter, letterRev
     if (letterRevealsRemaining === maxReveals) {
       // First time use
       if (wordLength === 5) {
-        return "Buy a vowel (1st guess only)";
+        return "Unlock a vowel (1st guess only)";
       } else if (wordLength === 6) {
         return "Need help? I can turn up to 2 letters for you";
       } else {
