@@ -180,7 +180,7 @@ export default function StatsPage() {
       </div>
 
       {/* Overall Stats */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-white p-4 rounded-lg border border-gray-200 text-center">
           <div className="text-2xl font-bold text-gray-800">{stats.played}</div>
           <div className="text-sm text-gray-600">Played</div>
@@ -192,6 +192,10 @@ export default function StatsPage() {
         <div className="bg-white p-4 rounded-lg border border-gray-200 text-center">
           <div className="text-2xl font-bold text-gray-800">{stats.currentStreak}</div>
           <div className="text-sm text-gray-600">Current Streak</div>
+        </div>
+        <div className="bg-white p-4 rounded-lg border border-gray-200 text-center">
+          <div className="text-2xl font-bold text-gray-800">{stats.maxStreak}</div>
+          <div className="text-sm text-gray-600">Max Streak</div>
         </div>
       </div>
 
