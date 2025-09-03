@@ -356,21 +356,34 @@ export default function Game({ openSettings, resetSettings, refreshScriptureLink
         // Only redirect for fresh wins, not restored wins
         if (isFreshWin) {
           // console.log('🎯 Fresh win detected - will redirect to stats in 2 seconds');
-          setTimeout(() => {
-            // console.log('🔄 Starting fade transition to stats...');
+          setTimeout(async () => {
+            // Determine scripture destination: try current word first, else default to JESUS
+            const targetWord = gameState.secretWord || 'JESUS';
+            let resolvedWord = targetWord;
+            try {
+              const resp = await fetch(`/api/word-definitions?word=${encodeURIComponent(targetWord)}`);
+              if (!resp.ok) {
+                // fallback to JESUS if not found
+                const fallbackResp = await fetch(`/api/word-definitions?word=JESUS`);
+                if (fallbackResp.ok) {
+                  resolvedWord = 'JESUS';
+                }
+              }
+            } catch (_) {
+              resolvedWord = 'JESUS';
+            }
+
             // Add fade out effect before redirecting
             const gameContainer = document.querySelector('.game-container');
             if (gameContainer) {
               gameContainer.classList.add('opacity-0', 'transition-opacity', 'duration-500');
               setTimeout(() => {
-                // console.log('🚀 Redirecting to stats page');
-                router.push('/stats');
+                router.push(`/scripture?word=${encodeURIComponent(resolvedWord)}`);
               }, 500);
             } else {
-              // console.log('⚠️ Game container not found, redirecting immediately');
-              router.push('/stats');
+              router.push(`/scripture?word=${encodeURIComponent(resolvedWord)}`);
             }
-          }, 2000);
+          }, 800);
         } else {
           // console.log('📋 Restored win - no redirect to stats');
         }
@@ -385,12 +398,48 @@ export default function Game({ openSettings, resetSettings, refreshScriptureLink
     if (gameState.gameStatus === 'lost' && !showLossAnimation && !settings.randomPuzzle && !isArchivePuzzle) {
       setShowLossAnimation(true);
       
+      // Prevent redirect loops by tracking completion per puzzle
+      const puzzleCompletionKey = `verseword-puzzle-completed-${gameState.secretWord}-${router.query.date || 'today'}`;
+      const isFreshLoss = !localStorage.getItem(puzzleCompletionKey);
+      if (isFreshLoss) {
+        localStorage.setItem(puzzleCompletionKey, 'true');
+      }
+      
       // Wait for the flip animation to complete (same timing as row flips)
       // Use the same duration as the tile flip animations
       const totalAnimationTime = gameState.wordLength * ANIMATION_CONFIG.TILE_FLIP_DURATION;
       
       setTimeout(() => {
         setLossAnimationComplete(true);
+        
+        // After a brief pause, fade out and redirect to scripture page (fresh losses only)
+        if (isFreshLoss) {
+          setTimeout(async () => {
+            const targetWord = gameState.secretWord || 'JESUS';
+            let resolvedWord = targetWord;
+            try {
+              const resp = await fetch(`/api/word-definitions?word=${encodeURIComponent(targetWord)}`);
+              if (!resp.ok) {
+                const fallbackResp = await fetch(`/api/word-definitions?word=JESUS`);
+                if (fallbackResp.ok) {
+                  resolvedWord = 'JESUS';
+                }
+              }
+            } catch (_) {
+              resolvedWord = 'JESUS';
+            }
+
+            const gameContainer = document.querySelector('.game-container');
+            if (gameContainer) {
+              gameContainer.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+              setTimeout(() => {
+                router.push(`/scripture?word=${encodeURIComponent(resolvedWord)}`);
+              }, 500);
+            } else {
+              router.push(`/scripture?word=${encodeURIComponent(resolvedWord)}`);
+            }
+          }, 800);
+        }
       }, totalAnimationTime);
     }
   }, [gameState.gameStatus, showLossAnimation, settings.randomPuzzle, router.query.date, router.query.archive, gameState.wordLength]);
