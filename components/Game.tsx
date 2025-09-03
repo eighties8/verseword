@@ -109,8 +109,11 @@ export default function Game({ openSettings, resetSettings, refreshScriptureLink
   // ===== Post-submission unlocked positions =====
   const [postSubmitUnlockedPositions, setPostSubmitUnlockedPositions] = useState<Set<number>>(new Set());
   
-  // State for clue ribbon fade behavior
-  const [showClueByDefault, setShowClueByDefault] = useState(true);
+  // State for clue ribbon visibility. Start hidden; we'll reveal after initial focus with a delay
+  const [showClueByDefault, setShowClueByDefault] = useState(false);
+  // Track scheduling of the initial clue reveal per puzzle id
+  const initialClueDelayScheduledRef = useRef<string | null>(null);
+  const initialClueDelayTimerRef = useRef<number | null>(null);
   
   // State for scripture link
   const [wordExistsInDefinitions, setWordExistsInDefinitions] = useState(false);
@@ -263,7 +266,7 @@ export default function Game({ openSettings, resetSettings, refreshScriptureLink
       // Reset UI states
       setIsShaking(false);
       setForceClear(false);
-      setShowClueByDefault(true); // Reset clue ribbon to show clue by default
+      setShowClueByDefault(false); // Delay reveal until after initial focus
       setToasts([]);
 
       // No more automatic vowel reveal - all letters start hidden
@@ -805,7 +808,7 @@ export default function Game({ openSettings, resetSettings, refreshScriptureLink
           setShowFadeInForInput(false);
           setFadeOutClearInput(false);
           setPreviouslyRevealedPositions(new Set());
-          setShowClueByDefault(true); // Reset clue ribbon to show clue by default for fresh games
+          setShowClueByDefault(false); // Delay reveal until after initial focus
           
           hasRestoredFromStorage.current = false;
         }
@@ -1687,6 +1690,26 @@ export default function Game({ openSettings, resetSettings, refreshScriptureLink
         ) || document.querySelector<HTMLInputElement>('input[data-role="active-cell"][data-locked="false"][data-revealed="false"]');
         el?.focus();
         el?.select?.();
+      }
+
+      // After we autofocus on the first input for a new puzzle, delay clue reveal by 2.5s
+      try {
+        const currentId = activePuzzleIdRef.current;
+        // Only schedule once per puzzle id
+        if (currentId && initialClueDelayScheduledRef.current !== currentId) {
+          initialClueDelayScheduledRef.current = currentId;
+          if (initialClueDelayTimerRef.current) {
+            window.clearTimeout(initialClueDelayTimerRef.current);
+          }
+          initialClueDelayTimerRef.current = window.setTimeout(() => {
+            // Do not reveal if the user has disabled clues or game already progressed beyond start
+            if (!settings.hideClue && (gameState.gameStatus === 'not_started' || gameState.attemptIndex === 0)) {
+              setShowClueByDefault(true);
+            }
+          }, 2500);
+        }
+      } catch {
+        // noop
       }
     });
   }

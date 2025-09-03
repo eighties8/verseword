@@ -28,6 +28,9 @@ export default function ClueRibbon({ clue, targetWord, onRevealLetter, letterRev
   
   // Handle smooth text transitions
   useEffect(() => {
+    // Skip fade transition on initial mount when displayText is empty
+    if (!displayText) return;
+
     if (displayText !== targetText) {
       // Start fade out
       setIsVisible(false);
@@ -42,10 +45,11 @@ export default function ClueRibbon({ clue, targetWord, onRevealLetter, letterRev
     }
   }, [targetText, displayText]);
   
-  // Initialize display text
+  // Initialize display text (no fade)
   useEffect(() => {
     if (!displayText) {
       setDisplayText(targetText);
+      setIsVisible(true);
     }
   }, [targetText, displayText]);
   
