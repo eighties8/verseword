@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { BarChart3, CalendarDays, Settings, HelpCircle, Eye, Sparkles, Cross } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SettingsModal from "./Settings";
+import HowToPlayContent from "./HowToPlayContent";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -22,6 +23,7 @@ export default function Layout({ children, title, narrow, onSettingsChange, curr
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [openedFromClue, setOpenedFromClue] = useState(false);
   const [puzzleInProgress, setPuzzleInProgress] = useState(false);
+  const [showFirstRun, setShowFirstRun] = useState(false);
 
   // Debug logging for scripture link
   console.log('🏗️ Layout render - showScriptureLink:', showScriptureLink, 'scriptureWord:', scriptureWord);
@@ -101,6 +103,25 @@ export default function Layout({ children, title, narrow, onSettingsChange, curr
     }
     return child;
   });
+
+  // First-run detection (client-only)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const puzzles = localStorage.getItem('verseword:puzzles:v2');
+      const dismissed = localStorage.getItem('verseword:firstRunDismissed');
+      if (!puzzles && dismissed !== 'true') {
+        setShowFirstRun(true);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  const dismissFirstRun = () => {
+    setShowFirstRun(false);
+    try { localStorage.setItem('verseword:firstRunDismissed', 'true'); } catch {}
+  };
 
   return (
     <div className="background min-h-screen flex flex-col">
@@ -229,6 +250,32 @@ export default function Layout({ children, title, narrow, onSettingsChange, curr
           openedFromClue={openedFromClue}
           puzzleInProgress={puzzleInProgress}
         />
+      )}
+
+      {/* First-run HowTo modal */}
+      {showFirstRun && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-xl shadow-xl max-w-3xl w-full mx-4 relative">
+            <button
+              aria-label="Close"
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+              onClick={dismissFirstRun}
+            >
+              ✕
+            </button>
+            <div className="max-h-[80vh] overflow-y-auto p-4 sm:p-6">
+              <HowToPlayContent compact />
+              <div className="mt-6 flex justify-center">
+                <button
+                  onClick={dismissFirstRun}
+                  className="px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-500 transition-colors"
+                >
+                  Got it! Take me to the Puzzle!
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

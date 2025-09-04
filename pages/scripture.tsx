@@ -5,6 +5,196 @@ import { loadStats, StatsSnapshot, GameResult } from '../lib/stats';
 import { loadAll } from '../lib/storage';
 import { evaluateGuess } from '../lib/gameLogic';
 
+// Canonical 66-book order (Protestant)
+const BOOKS_CANONICAL_ORDER: string[] = [
+  'Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy',
+  'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel',
+  '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra',
+  'Nehemiah', 'Esther', 'Job', 'Psalms', 'Proverbs',
+  'Ecclesiastes', 'Song of Solomon', 'Isaiah', 'Jeremiah', 'Lamentations',
+  'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos',
+  'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk',
+  'Zephaniah', 'Haggai', 'Zechariah', 'Malachi',
+  'Matthew', 'Mark', 'Luke', 'John', 'Acts',
+  'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians',
+  'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy',
+  '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James',
+  '1 Peter', '2 Peter', '1 John', '2 John', '3 John',
+  'Jude', 'Revelation'
+];
+
+const BOOK_INDEX: Record<string, number> = BOOKS_CANONICAL_ORDER
+  .reduce((acc, name, idx) => { acc[name.toLowerCase()] = idx; return acc; }, {} as Record<string, number>);
+
+// Common aliases -> canonical names
+const BOOK_ALIASES: Record<string, string> = {
+  // Psalms + Song
+  'ps': 'Psalms',
+  'psa': 'Psalms',
+  'psalm': 'Psalms',
+  'psalms': 'Psalms',
+  'song of songs': 'Song of Solomon',
+  'song of solomon': 'Song of Solomon',
+  'canticles': 'Song of Solomon',
+  // Gospels and common abbrev
+  'mt': 'Matthew',
+  'matt': 'Matthew',
+  'mk': 'Mark',
+  'mrk': 'Mark',
+  'lk': 'Luke',
+  'jn': 'John',
+  'jhn': 'John',
+  // OT common abbrev
+  'gen': 'Genesis',
+  'ex': 'Exodus',
+  'exod': 'Exodus',
+  'lev': 'Leviticus',
+  'num': 'Numbers',
+  'deut': 'Deuteronomy',
+  'jos': 'Joshua',
+  'josh': 'Joshua',
+  'judg': 'Judges',
+  '1sam': '1 Samuel',
+  '2sam': '2 Samuel',
+  'samuel': 'Samuel',
+  '1kgs': '1 Kings',
+  '2kgs': '2 Kings',
+  'kgs': 'Kings',
+  '1chron': '1 Chronicles',
+  '2chron': '2 Chronicles',
+  'chronicles': 'Chronicles',
+  'neh': 'Nehemiah',
+  'esth': 'Esther',
+  'prov': 'Proverbs',
+  'eccl': 'Ecclesiastes',
+  'ecc': 'Ecclesiastes',
+  'isa': 'Isaiah',
+  'jer': 'Jeremiah',
+  'lam': 'Lamentations',
+  'ezek': 'Ezekiel',
+  'dan': 'Daniel',
+  'hos': 'Hosea',
+  'obad': 'Obadiah',
+  'jon': 'Jonah',
+  'mic': 'Micah',
+  'nah': 'Nahum',
+  'hab': 'Habakkuk',
+  'zeph': 'Zephaniah',
+  'hag': 'Haggai',
+  'zech': 'Zechariah',
+  'mal': 'Malachi',
+  // Epistles common abbrev
+  'rom': 'Romans',
+  'cor': 'Corinthians',
+  'gal': 'Galatians',
+  'eph': 'Ephesians',
+  'phil': 'Philippians',
+  'php': 'Philippians',
+  'col': 'Colossians',
+  'thess': 'Thessalonians',
+  'tim': 'Timothy',
+  'tit': 'Titus',
+  'philem': 'Philemon',
+  'phlm': 'Philemon',
+  'heb': 'Hebrews',
+  'jas': 'James',
+  'jms': 'James',
+  'pet': 'Peter',
+  'rev': 'Revelation',
+};
+
+function normalizeWhitespace(text: string): string {
+  return text.replace(/\s+/g, ' ').trim();
+}
+
+function normalizeBookName(rawBook: string): string {
+  // Remove periods and collapse whitespace
+  const noDots = rawBook.replace(/\./g, '');
+  let base = normalizeWhitespace(noDots);
+
+  // Strip leading prefixes like "Comp", "Cf", "Compare", "See"
+  base = base.replace(/^(?:comp|cf|compare|see)\s+/i, '');
+
+  // Lowercase forms for mapping
+  const lower = base.toLowerCase();
+  const ordinalNormalized = lower.replace(/\b(1st|2nd|3rd)\b/g, m => ({ '1st': '1', '2nd': '2', '3rd': '3' }[m] as string));
+
+  // Direct alias mapping
+  if (BOOK_ALIASES[ordinalNormalized]) return BOOK_ALIASES[ordinalNormalized];
+  if (BOOK_ALIASES[lower]) return BOOK_ALIASES[lower];
+
+  // Handle numeric prefix + abbreviation (e.g., "1 Sam", "2 Kgs", "1 Thess")
+  const numMatch = base.match(/^([123])\s+(.*)$/);
+  if (numMatch) {
+    const n = numMatch[1];
+    const rest = normalizeWhitespace(numMatch[2]);
+    const restLower = rest.toLowerCase();
+    const aliased = BOOK_ALIASES[restLower] || BOOK_ALIASES[restLower.replace(/\s+/g, '')];
+    if (aliased) return `${n} ${aliased}`;
+  }
+
+  // Title-case words, preserving leading number where present
+  const parts = base.split(' ');
+  const titleCased = parts.map((part, i) => {
+    if (i === 0 && /^[123]$/.test(part)) return part; // keep numeric prefix
+    if (['of', 'the', 'and'].includes(part.toLowerCase())) return part.toLowerCase();
+    return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+  }).join(' ');
+
+  return titleCased;
+}
+
+interface ParsedReferenceKey {
+  original: string;
+  book: string | null;
+  bookIndex: number;
+  chapter: number;
+  verse: number;
+  originalIndex: number;
+}
+
+function parseReferenceToKey(ref: string, originalIndex: number): ParsedReferenceKey {
+  const trimmed = ref.trim();
+  // Match: <book> <chapter>[:<verse>][...optional trailing range/list]
+  const match = trimmed.match(/^(.+?)\s+(\d+)(?::(\d+))?(?:[\-–,].*)?$/);
+  if (!match) {
+    return { original: ref, book: null, bookIndex: Number.MAX_SAFE_INTEGER, chapter: Number.MAX_SAFE_INTEGER, verse: Number.MAX_SAFE_INTEGER, originalIndex };
+  }
+
+  const rawBook = match[1];
+  const book = normalizeBookName(rawBook);
+  const chapter = parseInt(match[2], 10) || 0;
+  const verse = match[3] ? (parseInt(match[3], 10) || 0) : 0;
+
+  const indexKey = BOOK_INDEX[book.toLowerCase()];
+  const bookIndex = typeof indexKey === 'number' ? indexKey : Number.MAX_SAFE_INTEGER - 1; // unknown books go near end
+
+  return { original: ref, book, bookIndex, chapter, verse, originalIndex };
+}
+
+function sortReferences(refs: string[]): string[] {
+  const keyed: ParsedReferenceKey[] = refs.map((r, idx) => parseReferenceToKey(r, idx));
+  keyed.sort((a, b) => {
+    if (a.bookIndex !== b.bookIndex) return a.bookIndex - b.bookIndex;
+    if (a.chapter !== b.chapter) return a.chapter - b.chapter;
+    if (a.verse !== b.verse) return a.verse - b.verse;
+    return a.originalIndex - b.originalIndex; // stable for ties/unknowns
+  });
+  return keyed.map(k => k.original);
+}
+
+function cleanReference(ref: string): string {
+  const trimmed = ref.trim().replace(/\s+/g, ' ');
+  // Strip helper prefixes like "Comp.", "Cf.", etc. and their dot variants
+  const withoutPrefix = trimmed.replace(/^(?:Comp\.?|Cf\.?|Compare|See)\s+/i, '');
+  const match = withoutPrefix.match(/^(.+?)\s+(\d+)(?::(\d+))?(?:[\-–,].*)?$/);
+  if (!match) return withoutPrefix;
+  const book = normalizeBookName(match[1]);
+  const chapter = match[2];
+  const verse = match[3] ? `:${match[3]}` : '';
+  return `${book} ${chapter}${verse}`;
+}
+
 interface WordDefinition {
   partOfSpeech: string;
   definitions: string[];
@@ -257,7 +447,7 @@ export default function ScripturePage({ word, definitions }: ScripturePageProps)
 
       {/* Header */}
       <div className="border-b border-gray-100">
-        <div className="max-w-4xl mx-auto px-6 py-6">
+        <div className="max-w-4xl mx-auto px-6 md:px-0 py-6">
           <div className="grid items-center grid-cols-[auto,1fr,auto] gap-2 relative">
             {/* Left: Back */}
             <div className="justify-self-start">
@@ -316,7 +506,7 @@ export default function ScripturePage({ word, definitions }: ScripturePageProps)
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-6 md:px-0 py-8">
         {/* Word Header */}
         <div className="my-4 mb-8">
           <h2 className="text-4xl mb-3 flex items-center">
@@ -384,7 +574,8 @@ export default function ScripturePage({ word, definitions }: ScripturePageProps)
                     </h4>
                   )}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {definition.examples.map((verse, verseIndex) => {
+                    {sortReferences(definition.examples).map((rawVerse, verseIndex) => {
+                      const verse = cleanReference(rawVerse);
                       // Create Bible Gateway URL for the verse
                       const bibleGatewayUrl = `https://www.biblegateway.com/passage/?search=${encodeURIComponent(verse)}&version=NIV`;
                       
