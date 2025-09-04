@@ -40,7 +40,7 @@ export default function PrivacyPage() {
           </p>
           <ul>
             <li>Learn more / opt-out: https://policies.google.com/technologies/ads and https://adssettings.google.com</li>
-            <li>Google's Privacy &amp; Terms: https://policies.google.com/privacy</li>
+            <li>Google&apos;s Privacy &amp; Terms: https://policies.google.com/privacy</li>
           </ul>
         </section>
 
