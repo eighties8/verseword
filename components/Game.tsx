@@ -386,7 +386,7 @@ export default function Game({ openSettings, resetSettings, refreshScriptureLink
             } else {
               router.push(`/scripture?word=${encodeURIComponent(resolvedWord)}`);
             }
-          }, 800);
+          }, 0);
         } else {
           // console.log('📋 Restored win - no redirect to stats');
         }

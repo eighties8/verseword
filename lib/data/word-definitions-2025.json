@@ -229,6 +229,20 @@
         ]
       }
     ],
+    "HOSANNA": [
+      {
+        "partOfSpeech": "",
+        "definitions": [
+          "The phrase Hosanna is found in Bible verses like Matthew 21:9, Mark 11:9, and John 12:13, where crowds shout it during Jesus' Triumphal Entry into Jerusalem on Palm Sunday. The Hebrew word means 'oh save now' or 'please, Lord, save us,' but it was used as a cry of joyous praise and exultation, celebrating Jesus as the promised Messiah and the source of salvation. The shout is a direct quotation and acknowledgment of Psalm 118:25-26, a messianic psalm."
+        ],
+        "examples": [
+          "Psalm 118:25-26",
+          "Matthew 12:9",
+          "Mark 11:9",
+          "John 12:13"
+        ]
+      }
+    ],
     "SAVIOR": [
       {
         "partOfSpeech": "noun",
