@@ -11,7 +11,7 @@ export default function ContactPage() {
       <h1 className="text-3xl mb-6">Contact</h1>
       <div className="prose prose-gray max-w-none">
         <p>
-          We'd love to hear from you—bug reports, suggestions, and collaboration ideas are welcome.
+          We&apos;d love to hear from you—bug reports, suggestions, and collaboration ideas are welcome.
         </p>
         <ul>
           <li>Email: support@verseword.com</li>

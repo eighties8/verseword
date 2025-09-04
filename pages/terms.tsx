@@ -16,7 +16,7 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="text-xl mb-2">Use of the Service</h2>
-          <p>Do not misuse the Service, interfere with others' use, or attempt to access non-public areas. We may modify or discontinue features at any time.</p>
+          <p>Do not misuse the Service, interfere with others&apos; use, or attempt to access non-public areas. We may modify or discontinue features at any time.</p>
         </section>
         <section>
           <h2 className="text-xl mb-2">Intellectual Property</h2>

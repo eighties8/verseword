@@ -52,7 +52,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-xl mb-2">Children's Privacy</h2>
+          <h2 className="text-xl mb-2">Children&apos;s Privacy</h2>
           <p>
             Verseword is intended for general audiences and not directed to children under 13.
           </p>
@@ -62,7 +62,7 @@ export default function PrivacyPage() {
           <h2 className="text-xl mb-2">Your Choices</h2>
           <ul>
             <li>Disable cookies in your browser (may affect features).</li>
-            <li>Use Google's Ads Settings to manage ad personalization.</li>
+            <li>Use Google&apos;s Ads Settings to manage ad personalization.</li>
           </ul>
         </section>
 

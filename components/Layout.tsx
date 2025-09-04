@@ -146,7 +146,7 @@ export default function Layout({ children, title, narrow, onSettingsChange, curr
                 <circle cx="128" cy="128" r="36" fill="#16a34a" />
                 <circle cx="128" cy="128" r="14" fill="#0B4D2A" />
               </svg> */}
-              <img src="/logo-cross.webp" alt="Verseword" className="w-8 h-8" />
+              <img src="/logo-cross2.webp" alt="Verseword" className="w-8 h-8" />
             </div>
 
             {/* Title */}
