@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # apply_easton_definitions.py
-# Drop-in: replaces definitions in wordDefinitions.json with Easton’s entries
+# Drop-in: replaces definitions in wordDefinitions.json with Easton's entries
 # and extracts all Scripture references into the "examples" array.
 
 from __future__ import annotations

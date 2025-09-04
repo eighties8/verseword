@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://verseword.com/sitemap.xml

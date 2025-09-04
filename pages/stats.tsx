@@ -201,7 +201,7 @@ export default function StatsPage() {
 
       {/* Guess Distribution */}
       <div className="bg-white p-4 rounded-lg border border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Guess Distribution</h3>
+        <h3 className="text-lg text-gray-900 mb-4">Guess Distribution</h3>
         <div className="space-y-2">
           {[1, 2, 3, 4, 5, 6].map((guesses) => {
             const count = stats.guessDistribution[guesses] || 0;
@@ -227,7 +227,7 @@ export default function StatsPage() {
       {/* Recent Results */}
       <div className="bg-white p-4 rounded-lg border border-gray-200">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Recent Results</h3>
+          <h3 className="text-lg text-gray-900">Recent Results</h3>
           {stats.results && stats.results.length > 0 && (
             <button
               onClick={() => generateAndShareEmojiGrid(stats)}

@@ -1,7 +1,7 @@
 Business Source License 1.1 (BUSL-1.1)
 
 License Parameters
-- Licensor: Scott Blanchard (eighties8)
+- Licensor: Red Mountain Media, LLC
 - Licensed Work: Verseword (the “Licensed Work”)
   The “Licensed Work” means the source code and associated materials in this repository.
 - Additional Use Grant (Non-Production Use): You may use, copy, modify, create derivative works of, and self-host the Licensed Work for non-production purposes, including personal, educational, academic research, internal evaluation, prototyping, and non-commercial demos.
@@ -28,7 +28,7 @@ License Parameters
    You may combine or link the Licensed Work with other code and distribute combined works for Non-Production Use under the terms of this License. This License does not restrict terms applying to your separate code that merely interfaces with unmodified Licensed Work via stable, documented APIs.
 
 6. No Trademark License.  
-   This License does not grant rights to use the Licensor’s trademarks, trade names, logos, or brand features.
+   This License does not grant rights to use the Licensor's trademarks, trade names, logos, or brand features.
 
 7. Notices & Preservation.  
    You must retain in all copies of the Licensed Work (and significant portions of it) the copyright notice(s), this License text (including the License Parameters), and any required attribution notices.
@@ -40,7 +40,7 @@ License Parameters
    THE LICENSED WORK IS PROVIDED “AS IS,” WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT.
 
 10. Limitation of Liability.  
-    TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT WILL LICENSOR BE LIABLE FOR ANY INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, OR FOR ANY LOSS OF PROFITS, REVENUE, DATA, OR GOODWILL, ARISING OUT OF OR RELATING TO THIS LICENSE OR THE LICENSED WORK, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. LICENSOR’S AGGREGATE LIABILITY FOR DIRECT DAMAGES SHALL NOT EXCEED ONE HUNDRED U.S. DOLLARS (US$100).
+    TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT WILL LICENSOR BE LIABLE FOR ANY INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, OR FOR ANY LOSS OF PROFITS, REVENUE, DATA, OR GOODWILL, ARISING OUT OF OR RELATING TO THIS LICENSE OR THE LICENSED WORK, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. LICENSOR'S AGGREGATE LIABILITY FOR DIRECT DAMAGES SHALL NOT EXCEED ONE HUNDRED U.S. DOLLARS (US$100).
 
 11. Patents.  
     No patent rights are granted under this License. Any patent rights (if any) would need to be granted in a separate written license.

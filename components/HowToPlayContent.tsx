@@ -14,27 +14,27 @@ export default function HowToPlayContent({ compact = false }: HowToPlayContentPr
         <div className="space-y-3">
           <div className="flex justify-center gap-2">
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-green-600 text-white">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-green-600 text-white">
                 J
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
                 E
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
                 S
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
                 U
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
                 S
               </div>
             </div>
@@ -47,27 +47,27 @@ export default function HowToPlayContent({ compact = false }: HowToPlayContentPr
         <div className="space-y-3">
           <div className="flex justify-center gap-2">
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
                 S
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
                 A
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-yellow-500 text-white">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-yellow-500 text-white">
                 V
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
                 E
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
                 S
               </div>
             </div>
@@ -80,27 +80,27 @@ export default function HowToPlayContent({ compact = false }: HowToPlayContentPr
         <div className="space-y-3">
           <div className="flex justify-center gap-2">
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
                 W
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
                 O
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
                 R
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
                 K
               </div>
             </div>
             <div className="tile-frame w-12 h-12 md:w-12 md:h-12 lg:w-14 lg:h-14 rounded-lg transform-gpu">
-              <div className="tile-panel flex items-center justify-center text-center font-semibold uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
+              <div className="tile-panel flex items-center justify-center text-center uppercase text-lg md:text-lg lg:text-xl transform-gpu origin-center preserve-3d bg-gray-200 text-gray-900">
                 S
               </div>
             </div>

@@ -43,7 +43,7 @@ export default function Keyboard({
     'w-full max-w-[520px] grid grid-cols-10 gap-0.5 md:gap-1 md:flex md:justify-center';
 
   // Wrapper around each button:
-  // - Mobile: it’s the grid cell. We give ENTER col-span-3 on the last row, else col-span-1.
+  // - Mobile: it's the grid cell. We give ENTER col-span-3 on the last row, else col-span-1.
   // - md+: we revert to your flex min widths and ENTER grows.
   const getWrapperClasses = (key: string, rowIndex: number) => {
     const base = ['relative'];

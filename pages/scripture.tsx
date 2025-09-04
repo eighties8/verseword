@@ -521,7 +521,7 @@ export default function ScripturePage({ word, definitions }: ScripturePageProps)
 
         {/* Definitions */}
         <div className="mb-8">
-          {/* <h3 className="text-xl font-semibold text-gray-900 mb-6">
+          {/* <h3 className="text-xl text-gray-900 mb-6">
             Definitions
           </h3> */}
           <div className="space-y-8">
@@ -561,7 +561,7 @@ export default function ScripturePage({ word, definitions }: ScripturePageProps)
 
         {/* Verse References */}
         <div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-6">
+          <h3 className="text-xl text-gray-900 mb-6">
             Verse References
           </h3>
           <div className="space-y-6">

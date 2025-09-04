@@ -235,7 +235,16 @@ export default function Layout({ children, title, narrow, onSettingsChange, curr
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 px-4 py-3">
         <div className="max-w-4xl mx-auto text-center text-sm text-gray-500">
-        VerseWord - Deepen your Bible knowledge with daily word puzzles and insights
+          <div className="mb-2">
+            VerseWord - Deepen your Bible knowledge with daily word puzzles and insights
+          </div>
+          <nav className="flex flex-wrap justify-center gap-4">
+            <Link href="/about" className="hover:text-gray-700">About</Link>
+            <Link href="/rules" className="hover:text-gray-700">Rules</Link>
+            <Link href="/privacy" className="hover:text-gray-700">Privacy</Link>
+            <Link href="/terms" className="hover:text-gray-700">Terms</Link>
+            <Link href="/contact" className="hover:text-gray-700">Contact</Link>
+          </nav>
         </div>
       </footer>
 
